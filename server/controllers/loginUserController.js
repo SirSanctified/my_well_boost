@@ -14,9 +14,7 @@ const createJWTs = (user) => {
       email: user.email,
     },
     process.env.JWT_SECRET_ACCESS,
-    {
-      expiresIn: "1h",
-    },
+    { expiresIn: "1h", },
   )
   const refreshToken = jwt.sign(
     {
@@ -24,9 +22,7 @@ const createJWTs = (user) => {
       email: user.email,
     },
     process.env.JWT_SECRET_REFRESH,
-    {
-      expiresIn: "30d",
-    }
+    { expiresIn: "30d", }
   )
   return {
     accessToken: accessToken,
@@ -44,9 +40,7 @@ export const loginUserController = async (req, res) => {
   // check if user with given email exists in the database
   try {
     const user = await User.findOne({where: {email: email}})
-    if (!user) {
-      return res.sendStatus(401)
-    }
+    if (!user) return res.sendStatus(401)
     // check if password is correct
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
     if (!isPasswordCorrect) {
@@ -65,13 +59,9 @@ export const loginUserController = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     })
     // send response
-    res.status(200).json({
-      "token": accessToken,
-    })
+    res.status(200).json({ "token": accessToken, })
   } catch (error) {
-    res.status(500).json({
-      "error": error.message,
-    })
+    res.status(500).json({ "error": error.message, })
     console.error(error.message)
   }
 }
