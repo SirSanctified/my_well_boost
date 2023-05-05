@@ -1,10 +1,13 @@
 import express from 'express'
-import {registerUserController, activateUserController} from '../controllers/registerUserController.js'
+import userDetailsController from '../controllers/userDetailsController'
+import updateAccountController from '../controllers/updateAccountController'
+import deleteAccountController from '../controllers/deleteAccountController'
 
-const router = express.Router()
+const userRouter = express.Router()
 
-router
-.post('/register', registerUserController)
-.post('/activate/:activationToken', activateUserController)
+userRouter
+  .get('/:userId', userDetailsController)
+  .put('/:userId', updateAccountController)
+  .delete('/:userId', deleteAccountController)
 
-export default router
+export default userRouter

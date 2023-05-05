@@ -1,5 +1,6 @@
 import { DataTypes, Model, Deferrable } from "sequelize"
 import {sequelize} from "../db/db.js"
+import User from "./userModel.js"
 
 
 class Recommendation extends Model {}
@@ -14,10 +15,6 @@ Recommendation.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    allergies: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
     healthGoals: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -27,5 +24,7 @@ Recommendation.init({
         allowNull: true,
     }
 }, {sequelize})
+
+Recommendation.belongsTo(User)
 
 export default Recommendation
