@@ -9,7 +9,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const sendEmail = (user, activationLink) => {
+export const sendEmail = (user, {subject, message}) => {
   //create a nodemailer transport
   const transport = nodemailer.createTransport({
     service: "gmail",
@@ -23,13 +23,8 @@ const sendEmail = (user, activationLink) => {
   const mailOptions = {
     from: process.env.EMAIL,
     to: user.email,
-    subject: "Account activation link",
-    html: `
-      <h1>Please click on the link to activate your account</h1>
-      <hr />
-       <p>Do not share this link with anyone else</p>
-      <a href="${activationLink}">${activationLink}</a>
-    `,
+    subject: `${subject}`,
+    html: `${message}`,
   }
   // send email
   transport.sendMail(mailOptions, (error, info) => {
@@ -104,7 +99,14 @@ export const registerUserController = async (req, res) => {
     console.log(activationLink)
 
     // send email
-    sendEmail(newUser, activationLink)
+    const subject = 'Activate your Account'
+    const message = `
+      <h1>Please click on the link to activate your account</h1>
+      <hr />
+       <p>Do not share this link with anyone else</p>
+      <a href="${activationLink}">${activationLink}</a>
+      `
+    sendEmail(newUser, {subject, message})
     
     // send response to frontend
     res.status(201).json({

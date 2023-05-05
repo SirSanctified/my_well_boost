@@ -41,6 +41,8 @@ export const loginUserController = async (req, res) => {
   try {
     const user = await User.findOne({where: {email: email}})
     if (!user) return res.sendStatus(401)
+    // check if user has verified email address
+    if (!user.active) return res.status(400).json({"error": "Please verify your email address first"})
     // check if password is correct
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
     if (!isPasswordCorrect) {
