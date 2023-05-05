@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import User from "../models/userModel"
-import { sendEmail } from "./registerUserController"
+import {User} from "../models/associations.js"
+import { sendEmail } from "./registerUserController.js"
 
 export const forgotPassword = async(req, res) => {
   const { email } = req.body
@@ -16,14 +16,22 @@ export const forgotPassword = async(req, res) => {
     }
     const token = jwt.sign(payload, secret, { expiresIn: '10m' })
     const link = `http://localhost:4500/auth/reset-password/${user.id}/${token}`
+    console.log(link);
 
     // send email
     const subject = 'Reset your password'
     const message = `
-    <h1>Please click on the link to reset your password</h1>
-    <hr />
-     <p>Do not share this link with anyone else</p>
-    <a href="${link}">${link}</a>
+    <h1>Dear ${user.firstName},</h1>
+
+    <p>We have received a request to reset your password. To reset your password, please follow the instructions below:</p>
+    <ol>
+      <li>Click on the following link: <a href="${link}">${link}</a></li>
+      <li>Enter your email address associated with your account.</li>
+      <li>Follow the prompts to reset your password.</li>
+    </ol>
+    <p>If you did not request a password reset, please ignore this email.</p>
+
+    <p>Thank you, MyWellBoost Team</p>
     `
     sendEmail(user, {subject, message})
     res.status(200).json({"message": "Password reset email has been sent"})
@@ -49,12 +57,17 @@ export const resetPassword = async(req, res) => {
       user.password = hashedPassword
       await user.save()
       // send email to user
-      const subject = 'Password reset successful'
+      const subject = 'Password Reset Successful'
       const message = `
-      <h1>Password reset successful</h1>
-      <hr />
-      <br />
-      <p>Your password has been reset successfully. You can now login with your new password</p>
+      <h1>Dear ${user.firstName},</h1>
+
+      <p>We are writing to confirm that your password has been successfully reset. If you did not initiate this request, please contact our support team immediately.</p>
+
+      <p>If you did reset your password, please keep it safe and do not share it with anyone. We recommend using a unique password for each of your accounts to ensure maximum security.</p>
+
+      <p>If you have any further questions or concerns, please do not hesitate to contact us.</p>
+
+      <p>Best regards, MyWellBoost Team</p>
       `
       sendEmail(user, { subject, message })
       res.status(200).json({ "message": "Password reset successfull" })

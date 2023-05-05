@@ -48,7 +48,5 @@ User.init({
     },
 }, {sequelize})
 
-User.hasOne(Recommendation)
-
 
 export default User

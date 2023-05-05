@@ -1,7 +1,7 @@
 import express from 'express'
-import userDetailsController from '../controllers/userDetailsController'
-import updateAccountController from '../controllers/updateAccountController'
-import deleteAccountController from '../controllers/deleteAccountController'
+import { userDetailsController } from '../controllers/userDetailsController.js'
+import { updateAccountController } from '../controllers/updateAccountController.js'
+import { deleteAccountController } from '../controllers/deleteAccountController.js'
 
 const userRouter = express.Router()
 

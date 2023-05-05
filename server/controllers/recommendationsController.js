@@ -1,7 +1,6 @@
 import {v4 as uuidv4} from "uuid"
 import dotenv from "dotenv"
-import Recommendation from "../models/recommendationModel"
-import User from "../models/userModel"
+import { User, Recommendation } from "../models/associations.js"
 import { Configuration, OpenAIApi } from 'openai'
 
 dotenv.config()
@@ -34,7 +33,7 @@ const promptGPT = async(history, goals, age, gender) => {
 }
 
 
-const createRecommendation = async(req, res) => {
+export const createRecommendation = async(req, res) => {
     const { medicalHistory, healthGoals } = req.body
     const { userId } = req.params
 

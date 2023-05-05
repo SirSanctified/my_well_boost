@@ -1,5 +1,5 @@
 import {sequelize} from "../db/db.js"
-import User from "../models/userModel.js"
+import {User} from "../models/associations.js"
 import bcrypt from "bcrypt"
 import {v4 as uuidv4} from "uuid"
 import jwt from "jsonwebtoken"
@@ -44,12 +44,12 @@ const createActivationLink = async (user) => {
         id: user.id,
         email: user.email,
       },
-      process.env.JWT_SECRET_ACTIVATION,
+      process.env.JWT_SECRET_ACTIVATION + user.active,
       {
         expiresIn: "30m",
       }
     )
-    const activationLink = `http://localhost:4500/api/auth/activate/${activationToken}`
+    const activationLink = `http://localhost:4500/auth/activate/${user.id}/${activationToken}`
     return activationLink
 }
 
@@ -101,10 +101,19 @@ export const registerUserController = async (req, res) => {
     // send email
     const subject = 'Activate your Account'
     const message = `
-      <h1>Please click on the link to activate your account</h1>
-      <hr />
-       <p>Do not share this link with anyone else</p>
-      <a href="${activationLink}">${activationLink}</a>
+    <h1>Dear ${newUser.firstName},</h1>
+
+    <p>We are delighted to have you as a new member of our community. To start using our services, please activate your account by clicking on the link below:</p>
+    
+    <a href="${activationLink}">${activationLink}</a>
+    
+    <p>Please note that this link will expire in 24 hours. If you encounter any issues during the activation process, please do not hesitate to contact our support team at support@mywellboost.com.</p>
+    
+    <p>Thank you for choosing our platform. We look forward to providing you with the best experience possible.</p>
+    
+    <p>Best regards,</p>
+    
+    <p>MyWellBoost Team</p>
       `
     sendEmail(newUser, {subject, message})
     
@@ -122,26 +131,46 @@ export const registerUserController = async (req, res) => {
 
 
 export const activateUserController = async (req, res) => {
-  const { activationToken } = req.params
+  const { activationToken, userId } = req.params
   if (!activationToken) {
     return res.status(400).json({
       "error": "Token not found",
     })
   }
   try {
-    const decoded = jwt.verify(activationToken, process.env.JWT_SECRET_ACTIVATION)
-    const user = await User.findOne({ where: { email: decoded.email } })
+    const user = await User.findOne({ where: { id: userId } })
     if (!user) {
       return res.status(404).json({
         "error": "User not found",
       })
     }
-    // activate user and save to database
-    user.active = true
-    await user.save()
-    res.status(200).json({
-      "message": "User activated successfully",
-    })
+    const decoded = jwt.verify(activationToken, process.env.JWT_SECRET_ACTIVATION + user.active)
+    if (decoded) {
+      // activate user and save to database
+      user.active = true
+      await user.save()
+      // send email to user
+      const subject = 'Account Activation Successful'
+      const message = `
+      <h1>Dear ${ user.firstName }</h1>
+
+      <p>We are delighted to inform you that your account has been successfully activated. You can now log in to our platform and start exploring all the features we have to offer.</p>
+
+      <p>To log in, please visit our website and enter your email address and password. If you have forgotten your password, you can reset it by clicking on the "Forgot Password" link on the login page.</p>
+
+      <p>We would like to take this opportunity to thank you for choosing our platform. We are committed to providing you with the best possible experience and support. If you have any questions or concerns, please do not hesitate to contact us.</p>
+
+      <p>Best regards,</p>
+
+      <p>MyWellboost Team</p>
+      `
+      sendEmail(user, { subject, message })
+      res.status(200).json({
+        "message": "User activated successfully",
+      })
+    } else {
+      res.sendStatus(400)
+    }
   } catch (error) {
     res.status(500).json({
       "error": error.message,

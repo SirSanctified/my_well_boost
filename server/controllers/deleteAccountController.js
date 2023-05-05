@@ -1,4 +1,4 @@
-import User from "../models/userModel"
+import { User } from "../models/associations.js"
 
 export const deleteAccountController = async(req, res) => {
     const { userId } = req.params

@@ -25,6 +25,5 @@ Recommendation.init({
     }
 }, {sequelize})
 
-Recommendation.belongsTo(User)
 
 export default Recommendation

@@ -1,13 +1,13 @@
 import express from "express"
-import getRecommendationController from '../controllers/getRecommendationController'
-import createRecommendation from '../controllers/recommendationsController'
-import updateRecommentationController from '../controllers/updateRecommendationController'
+import { getRecommentationController } from '../controllers/getRecommendationController.js'
+import { createRecommendation } from '../controllers/recommendationsController.js'
+import { updateRecommentationController } from '../controllers/updateRecommendationController.js'
 
 
 const recommendationRouter = express.Router()
 
-router
-  .get('/:recommendationId', getRecommendationController)
+recommendationRouter
+  .get('/:recommendationId', getRecommentationController)
   .post('/new', createRecommendation)
   .put('/update:recommendationId', updateRecommentationController)
 

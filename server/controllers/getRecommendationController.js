@@ -1,6 +1,6 @@
-import Recommendation from "../models/recommendationModel"
+import { Recommendation } from "../models/associations.js"
 
-const getRecommentationController = async(req, res) => {
+export const getRecommentationController = async(req, res) => {
   const  {recommendationId } = req.params
   try {
     const recommendation = await Recommendation.findOne({where: {id: recommendationId}})

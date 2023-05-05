@@ -1,4 +1,4 @@
-import User from "../models/userModel"
+import {User} from "../models/associations.js"
 
 export const handleLogout = async(req, res) => {
     // on client, also delete the token
