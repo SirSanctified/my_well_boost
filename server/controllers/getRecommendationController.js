@@ -11,6 +11,6 @@ export const getRecommentationController = async(req, res) => {
     }
   } catch(error) {
     console.error(error)
-    res.sendStatus(500)
+    res.status(500).json({ "error": error.message })
   }
 }

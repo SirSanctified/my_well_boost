@@ -1,4 +1,4 @@
-import {sequelize} from "../db/db.js"
+import {sequelize} from "../config/db.js"
 import {User} from "../models/associations.js"
 import bcrypt from "bcrypt"
 import {v4 as uuidv4} from "uuid"
@@ -40,14 +40,9 @@ export const sendEmail = (user, {subject, message}) => {
 const createActivationLink = async (user) => {
      // create onetime activation link
      const activationToken = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
+      { id: user.id, email: user.email },
       process.env.JWT_SECRET_ACTIVATION + user.active,
-      {
-        expiresIn: "30m",
-      }
+      { expiresIn: "30m" }
     )
     const activationLink = `http://localhost:4500/auth/activate/${user.id}/${activationToken}`
     return activationLink
@@ -70,16 +65,11 @@ export const registerUserController = async (req, res) => {
     // check if user with given email already exists in the database
     const user = await User.findOne({ where: { email: email } })
     if (user) {
-      return res.status(409).json(
-        {
-          "error": "User with given email already exists"
-        })
+      return res.status(409).json({ "error": "User with given email already exists" })
     }
   } catch (error) {
     console.log(error)
-    return res.status(500).json({
-      "error": "An internal server error occurred"
-    })
+    return res.status(500).json({ "error": error.message })
   }
   // hash the password and save user to database
   try {
@@ -118,13 +108,9 @@ export const registerUserController = async (req, res) => {
     sendEmail(newUser, {subject, message})
     
     // send response to frontend
-    res.status(201).json({
-      "message": "User created successfully",
-    })
+    res.status(201).json({ "message": "User created successfully" })
   } catch (error) {
-    res.status(500).json({
-      "error": error.message,
-    })
+    res.status(500).json({ "error": error.message })
     console.error(error)
   }
 }
@@ -133,16 +119,12 @@ export const registerUserController = async (req, res) => {
 export const activateUserController = async (req, res) => {
   const { activationToken, userId } = req.params
   if (!activationToken) {
-    return res.status(400).json({
-      "error": "Token not found",
-    })
+    return res.status(400).json({ "error": "Token not found" })
   }
   try {
     const user = await User.findOne({ where: { id: userId } })
     if (!user) {
-      return res.status(404).json({
-        "error": "User not found",
-      })
+      return res.status(404).json({ "error": "User not found" })
     }
     const decoded = jwt.verify(activationToken, process.env.JWT_SECRET_ACTIVATION + user.active)
     if (decoded) {
@@ -165,16 +147,12 @@ export const activateUserController = async (req, res) => {
       <p>MyWellboost Team</p>
       `
       sendEmail(user, { subject, message })
-      res.status(200).json({
-        "message": "User activated successfully",
-      })
+      res.status(200).json({ "message": "User activated successfully", "user": user.toJSON() })
     } else {
       res.sendStatus(400)
     }
   } catch (error) {
-    res.status(500).json({
-      "error": error.message,
-    })
+    res.status(400).json({ "error": error.message })
     console.error(error.message)
   }
 }

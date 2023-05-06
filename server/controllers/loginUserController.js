@@ -9,18 +9,12 @@ dotenv.config()
 
 const createJWTs = (user) => {
   const accessToken = jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-    },
+    { id: user.id, email: user.email },
     process.env.JWT_SECRET_ACCESS,
     { expiresIn: "1h", },
   )
   const refreshToken = jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-    },
+    { id: user.id, email: user.email },
     process.env.JWT_SECRET_REFRESH,
     { expiresIn: "30d", }
   )

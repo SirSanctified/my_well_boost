@@ -3,11 +3,10 @@ import {User} from "../models/associations.js"
 export const updateAccountController = async(req, res) => {
     const { userId } = req.params
     try {
-        const user = await User.findOne({ where: { id: userId } })
+        let user = await User.findOne({ where: { id: userId } })
         if (user) {
-            console.log(req.body);
-            await User.update({...req.body}, { where: { id: userId}})
-            res.sendStatus(200)
+            user = await User.update({...req.body}, { where: { id: userId}})
+            res.status(200).json(user.toJSON())
         } else {
             res.status(404).json({ "error": `User with id ${ userId } not found` })
         }

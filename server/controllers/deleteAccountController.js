@@ -12,7 +12,7 @@ export const deleteAccountController = async(req, res) => {
             res.sendStatus(404)
         }
     } catch (error) {
-        res.sendStatus(404)
+        res.status(404).json({ "error": error.message })
         console.log(error)
     }
 }

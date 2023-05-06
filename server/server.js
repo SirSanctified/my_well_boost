@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser'
 import userRouter from './routes/userRoutes.js'
 import recommendationRouter from './routes/recommendationRoutes.js'
 import authRouter from './routes/authRoutes.js'
-import {connectToDB} from './db/db.js'
+import {connectToDB} from './config/db.js'
 import { verifyJWT } from './middleware/verifyJWT.js'
 
 
@@ -21,7 +21,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
 app.use('/auth', authRouter)
-// app.use(verifyJWT)
+app.use(verifyJWT)
 app.use('/users', userRouter)
 app.use('/recommendations', recommendationRouter)
 

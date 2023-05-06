@@ -8,7 +8,7 @@ export const userDetailsController = async(req, res) => {
         if (!user) return res.sendStatus(404)
         res.status(200).json(user.toJSON())
     } catch (error) {
-        res.sendStatus(500)
+        res.status(500).json({ "error": error.message })
         console.error(error)
     }
 }

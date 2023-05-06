@@ -1,5 +1,5 @@
 import { DataTypes, Model, Deferrable } from "sequelize"
-import {sequelize} from "../db/db.js"
+import {sequelize} from "../config/db.js"
 import Recommendation from "./recommendationModel.js"
 
 

@@ -3,6 +3,6 @@ import Recommendation from './recommendationModel.js'
 
 
 User.hasOne(Recommendation, {onDelete: 'CASCADE' })
-Recommendation.belongsTo(User, { foreignKey: 'userId'})
+Recommendation.belongsTo(User)
 
 export { User, Recommendation }

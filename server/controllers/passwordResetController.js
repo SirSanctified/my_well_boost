@@ -29,7 +29,7 @@ export const forgotPassword = async(req, res) => {
       <li>Enter your email address associated with your account.</li>
       <li>Follow the prompts to reset your password.</li>
     </ol>
-    <p>If you did not request a password reset, please ignore this email.</p>
+    <p>Note that the link expires in 10 minutes. If you did not request a password reset, please ignore this email.</p>
 
     <p>Thank you, MyWellBoost Team</p>
     `
