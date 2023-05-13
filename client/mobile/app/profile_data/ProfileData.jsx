@@ -1,1 +1,0 @@
-import { SafeAreaView, View, Text,  } from 'react-native'

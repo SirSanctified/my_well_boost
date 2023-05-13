@@ -46,7 +46,7 @@ const Disclaimer = () => {
           : <View style={ disclaimerStyles.buttonEnabled }>
             <Button
               title={ 'Continue' }
-              handlePress={() => { router.push('/profile_data/ProfileData')}}
+              handlePress={() => { router.push('/profileData/ProfileData')}}
               isDisabled={ isDisabled }
             />
           </View>
