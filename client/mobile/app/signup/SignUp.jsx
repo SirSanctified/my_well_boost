@@ -46,7 +46,8 @@ const SignUp = () => {
         <View style={ signUpStyles.button }>
           <Button 
             title={ 'Register' }
-            handlePress={() => { router.push()}}
+            handlePress={() => { router.push('/disclaimer/Disclaimer')}}
+            isDisabled={ false }
           />
         </View>
         <View style={ signUpStyles.bottomText }>

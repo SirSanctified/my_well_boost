@@ -18,6 +18,7 @@ const Welcome = ({ handlePress }) => {
           <Button 
             title={ 'Get Started'}
             handlePress={ handlePress }
+            isDisabled={ false }
           />
         </View>
       </View>
