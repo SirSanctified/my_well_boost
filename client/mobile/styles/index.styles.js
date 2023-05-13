@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native"
 
-import { COLORS } from '../constants/styles'
+import { COLORS } from '../constants'
 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: COLORS.backgroundColor,
+        backgroundColor: COLORS.bgPrimary,
         flex: 1,
+        padding: 8,
     }
 })
 

@@ -27,6 +27,6 @@
       "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "MyWellBoost",
+    "scheme": "my-well-boost"
   }
 }
