@@ -11,7 +11,9 @@ const Home = () => {
   return (
     <SafeAreaView style={{ flex: 1}}>
       <View style={styles.container}>
-        <Welcome />
+        <Welcome 
+          handlePress={ () => router.push("/signup/SignUp") }
+        />
       </View>
     </SafeAreaView>
   )

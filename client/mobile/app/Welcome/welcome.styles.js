@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native'
 const welcomeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerText: {
     fontSize: 24,
@@ -17,7 +18,7 @@ const welcomeStyles = StyleSheet.create({
   },
   image: {
     width: '60%',
-    height: '70%',
+    height: '50%',
   },
   btn: {
     marginVertical: 30
