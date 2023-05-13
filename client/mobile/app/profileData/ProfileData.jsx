@@ -54,7 +54,8 @@ const ProfileData = () => {
         <View style={ profileDataStyles.buttonContainer }>
           <Button
             title={'Submit'}
-            handleOnPress={() => {}}
+            handlePress={() => {router.push('/history/History')}}
+            isDisabled={ false }
           />
         </View>
       </View>

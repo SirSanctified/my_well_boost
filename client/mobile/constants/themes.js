@@ -1,10 +1,8 @@
 const COLORS =  {
   bgPrimary: "#A7C2CE",
-  colorPrimary: "",
   btnColor: "#6425CB",
   btnText: "#ffffff",
-  disabledBtnColor: "",
-  bgProfile: "",
+  bgProfile: "#cccccc",
   bgRecommendations: "",
   profileColor: "",
 }
