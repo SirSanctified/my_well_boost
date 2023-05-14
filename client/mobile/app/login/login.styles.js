@@ -35,9 +35,9 @@ const loginStyles = StyleSheet.create({
   link: {
     textDecorationStyle: 'solid',
     textDecorationColor: COLORS.btnColor,
-    textDecorationLine: 1,
+    textDecorationLine: 'underline',
     color: COLORS.btnColor,
-    fontSize: 14
+    fontSize: 14,
   },
   linkText: {
     fontWeight: 'bold',

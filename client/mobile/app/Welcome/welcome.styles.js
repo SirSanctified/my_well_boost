@@ -4,9 +4,10 @@ const welcomeStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   headerText: {
+    marginTop: 70,
+    marginBottom: 30,
     fontSize: 24,
     fontWeight: '800',
     color: '#000',
@@ -14,14 +15,16 @@ const welcomeStyles = StyleSheet.create({
   },
   contentText: {
     fontSize: 14,
-    textAlign: 'center'
+    textAlign: 'center',
+    lineHeight: 20
   },
   image: {
-    width: '60%',
-    height: '50%',
+    width: 245,
+    height: 223,
+    marginTop: '20%'
   },
   btn: {
-    marginVertical: 30
+    marginTop: 50
   }
 })
 

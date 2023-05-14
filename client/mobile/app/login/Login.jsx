@@ -35,7 +35,7 @@ const Login = () => {
           />
         </View>
         <View style={ loginStyles.forgotPasswordContainer}>
-          <Text style={ loginStyles.linkText}><Link href={'/forgotPassord/ForgotPassword'} style={ loginStyles.link}>Forgot password?</Link></Text>
+          <Text style={ loginStyles.linkText}><Link href={'/forgotPassword/ForgotPassword'} style={ loginStyles.link}>Forgot password?</Link></Text>
         </View>
         <View style={ loginStyles.buttonContainer }>
           <Button 
@@ -45,7 +45,7 @@ const Login = () => {
           />
         </View>
         <View style={ loginStyles.bottomTextContainer }>
-          <Text style={ loginStyles.bottomText }>Don't have an account? <Link href={'/signup/SignUp'} style={ loginStyles.link }>Register</Link></Text>
+          <Text style={ loginStyles.bottomText }>Don't have an account? <Link href={'/signup/SignUp'} style={ loginStyles.linkText }>Register</Link></Text>
         </View>
       </View>
     </SafeAreaView>

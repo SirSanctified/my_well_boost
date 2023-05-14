@@ -35,7 +35,7 @@ const ForgotPassword = () => {
           <Button 
             title={ 'Reset Password' }
             isDisabled={ false }
-            handlePress={ () => router.push('/resetPassword/ResetPassword')}
+            handlePress={ () => router.push('/login/Login')}
           />
         </View>
       </View>
