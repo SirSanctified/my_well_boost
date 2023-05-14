@@ -4,6 +4,7 @@ import { historyStyles } from './history.styles'
 import { images } from '../../constants'
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
+import styles from '../../styles/index.styles'
 
 
 const History = () => {
@@ -11,13 +12,13 @@ const History = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={ historyStyles.container}>
-        <View style={ historyStyles.profileContainer}>
+        <View style={ styles.profileContainer}>
           <Image
-            style={ historyStyles.profileImage}
+            style={ styles.profileImage}
             source={ images.defaultProfile }
             resizeMode='contain'
           />
-          <Text style={ historyStyles.profileText}>Anny Jay</Text>
+          <Text style={ styles.profileText}>Anny Jay</Text>
         </View>
         <View style={ historyStyles.historyContainer}>
           <Text style={ historyStyles.headerText }>Let's work on getting your lifestyle and health history and your goals.</Text>
@@ -39,7 +40,7 @@ const History = () => {
         <View style={ historyStyles.buttonContainer}>
           <Button
             title={ 'Submit' }
-            handlePress={ () => {} }
+            handlePress={ () => {router.push('/dasboard/Dashboard')} }
             isDisabled={ false }
           />
         </View>
