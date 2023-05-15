@@ -20,7 +20,7 @@ export const disclaimerStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 16
+    marginVertical: 10
   },
   contentText: {
     fontSize: 14,
@@ -31,7 +31,7 @@ export const disclaimerStyles = StyleSheet.create({
   image: {
     width: 222,
     height: 182,
-    marginBottom: 24
+    marginBottom: 10
   },
   switchContainer: {
     flexDirection: "row",

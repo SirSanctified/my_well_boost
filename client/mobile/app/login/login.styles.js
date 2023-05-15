@@ -11,10 +11,10 @@ const loginStyles = StyleSheet.create({
   image: {
     width: 388,
     height: 197,
-    marginTop: 50,
+    marginTop: 30,
   },
   textContainer: {
-    marginTop: 30,
+    marginTop: 24,
   },
   headerText: {
     fontSize: 24,
@@ -22,13 +22,13 @@ const loginStyles = StyleSheet.create({
     textAlign: 'center'
   },
   inputContainer: {
-    marginTop: 30
+    marginTop: 10
   },
   buttonContainer: {
-    marginTop: 30
+    marginTop: 0
   },
   forgotPasswordContainer: {
-    marginVertical: 30,
+    marginVertical: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -44,7 +44,7 @@ const loginStyles = StyleSheet.create({
     color: COLORS.btnColor,
   },
   bottomTextContainer: {
-    marginTop: 30
+    marginTop: 10
   },
   bottomText: {
     fontSize: 14

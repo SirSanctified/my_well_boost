@@ -4,7 +4,7 @@ const inputTextStyles = StyleSheet.create({
   input: {
     height: 57,
     width: 380,
-    marginVertical: 12,
+    marginVertical: 8,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.7)',
     paddingHorizontal: 16,

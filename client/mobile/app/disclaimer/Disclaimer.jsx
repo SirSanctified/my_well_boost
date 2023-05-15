@@ -1,5 +1,5 @@
 import { View, Text, Image, Switch, SafeAreaView } from 'react-native'
-import { useRouter } from 'expo-router'
+import { useRouter, Stack } from 'expo-router'
 import { useState } from 'react'
 import { disclaimerStyles } from './disclaimer.styles'
 import { Button } from '../../components/Button/Button'
@@ -15,6 +15,13 @@ const Disclaimer = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Stack.Screen 
+        options={{
+          headerStyle: { backgroundColor: COLORS.bgPrimary },
+          headerShadowVisible: false,
+          headerTitle: '',
+        }}
+      />
       <View style={ disclaimerStyles.container }>
         <Image 
           source={ images.warning }

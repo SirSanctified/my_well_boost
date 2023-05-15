@@ -1,16 +1,23 @@
 import { SafeAreaView, View, Text, Image } from "react-native"
-import { useRouter, Link } from 'expo-router'
+import { useRouter, Link, Stack } from 'expo-router'
 import { useState } from "react"
 
 import { loginStyles } from "./login.styles"
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
-import { images } from "../../constants"
+import { COLORS, images } from "../../constants"
 
 const Login = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
+     <Stack.Screen 
+      options={{
+        headerStyle: { backgroundColor: COLORS.bgPrimary },
+        headerShadowVisible: false,
+        headerTitle: '',
+      }}
+     /> 
       <View style={ loginStyles.container }>
         <Image 
           source={ images.login }

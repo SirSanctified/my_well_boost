@@ -1,5 +1,5 @@
 import { SafeAreaView, View, Text, Image } from 'react-native'
-import { useRouter } from 'expo-router'
+import { useRouter, Stack } from 'expo-router'
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import { COLORS, images } from '../../constants'
@@ -10,6 +10,13 @@ const ProfileData = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Stack.Screen 
+        options={{
+          headerStyle: { backgroundColor: COLORS.bgPrimary },
+          headerShadowVisible: false,
+          headerTitle: '',
+        }}
+      />
       <View style={ profileDataStyles.container }>
         <Image
           source={ images.profileData }

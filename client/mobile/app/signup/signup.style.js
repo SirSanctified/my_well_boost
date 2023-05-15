@@ -6,24 +6,26 @@ const signUpStyles = StyleSheet.create({
     backgroundColor: COLORS.bgPrimary,
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 24,
   },
   image: {
-    marginTop: 127,
-    marginBottom: 24,
+    marginTop: 10,
+    marginBottom: 10,
     width: 331,
-    height: 232,
+    height: 200,
   },
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   button: {
-    marginTop: 24,
+    marginTop: 30,
   },
   bottomText: {
-    marginTop: 24,
+    marginTop: 10,
+    marginBottom: 30
   },
   linkText: {
     color: COLORS.btnColor,

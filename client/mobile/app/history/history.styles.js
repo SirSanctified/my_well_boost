@@ -6,17 +6,20 @@ export const historyStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.bgPrimary,
         alignItems: 'center',
-        padding: 20,
+        justifyContent: 'space-between',
+        padding: 10,
     },
     historyContainer: {
-        marginTop: 30,
+        marginTop: 12,
         width: '100%',
     },
     headerText: {
+        marginBottom: 10,
         fontSize: 24,
         fontWeight: 'bold',
     },
     buttonContainer: {
-        marginTop: 30,
+        marginTop: 16,
+        marginBottom: 50
     }
 })

@@ -7,23 +7,24 @@ export const profileDataStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.bgPrimary,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   image: {
     width: 300,
-    height: 197.5,
-    marginTop: 30,
+    height: 150,
+    marginTop: 10,
   },
   body: {
-    marginTop: 30,
+    marginTop: 0,
   },
   headertext: {
     fontSize: 24,
     fontWeight: 'bold',
   },
   inputContainer: {
-    marginTop: 30,
+    marginTop: 0,
   },
   buttonContainer: {
-    marginTop: 30,
+    marginBottom: 16,
   }
 })

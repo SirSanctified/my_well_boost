@@ -1,15 +1,22 @@
 import { View, Text, SafeAreaView, Image } from 'react-native'
-import { Link, useRouter } from 'expo-router'
+import { Link, useRouter, Stack } from 'expo-router'
 
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import { signUpStyles } from './signup.style'
-import { images } from '../../constants'
+import { images, COLORS } from '../../constants'
 
 const SignUp = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Stack.Screen 
+        options={{
+          headerStyle: { backgroundColor: COLORS.bgPrimary },
+          headerShadowVisible: false,
+          headerTitle: '',
+        }}
+      />
       <View style={ signUpStyles.container }>
         <Image 
           source={ images.signup }

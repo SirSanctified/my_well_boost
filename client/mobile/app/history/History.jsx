@@ -1,7 +1,7 @@
 import { SafeAreaView, View, Text, Image} from 'react-native'
-import { useRouter } from 'expo-router'
+import { useRouter, Stack } from 'expo-router'
 import { historyStyles } from './history.styles'
-import { images } from '../../constants'
+import { images, COLORS } from '../../constants'
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import styles from '../../styles/index.styles'
@@ -11,6 +11,13 @@ const History = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Stack.Screen 
+        options={{
+          headerStyle: { backgroundColor: COLORS.bgPrimary },
+          headerShadowVisible: false,
+          headerTitle: '',
+        }}
+      />
       <View style={ historyStyles.container}>
         <View style={ styles.profileContainer}>
           <Image

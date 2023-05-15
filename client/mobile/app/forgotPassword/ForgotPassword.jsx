@@ -1,15 +1,22 @@
 import { SafeAreaView, View, Text, Image } from "react-native"
-import { useRouter } from 'expo-router'
+import { useRouter, Stack } from 'expo-router'
 import { Button } from '../../components/Button/Button'
 import InputText from '../../components/InputText/InputText'
 import { forgotPasswordStyles } from "./forgotPassword.styles"
-import { images } from "../../constants"
+import { images, COLORS } from "../../constants"
 
 
 const ForgotPassword = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: COLORS.bgPrimary },
+          headerShadowVisible: false,
+          headerTitle: '',
+        }}
+      />
       <View style={ forgotPasswordStyles.container }>
         <Image 
           source={ images.forgot }

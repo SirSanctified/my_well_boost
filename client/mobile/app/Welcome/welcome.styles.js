@@ -4,6 +4,7 @@ const welcomeStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerText: {
     marginTop: 70,
@@ -24,7 +25,8 @@ const welcomeStyles = StyleSheet.create({
     marginTop: '20%'
   },
   btn: {
-    marginTop: 50
+    marginTop: 30,
+    marginBottom: 50
   }
 })
 
