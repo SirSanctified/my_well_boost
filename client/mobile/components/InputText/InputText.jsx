@@ -6,7 +6,7 @@ const InputText = ({ placeholder, handleOnChange, textValue, autoFocus, lines })
   return (
     <TextInput 
       placeholder={ placeholder }
-      onChange={ handleOnChange }
+      onChangeText={ (text) => handleOnChange(text) }
       value={ textValue }
       autoFocus={ autoFocus }
       numberOfLines={ lines ? lines : 1}

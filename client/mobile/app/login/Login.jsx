@@ -6,8 +6,12 @@ import { loginStyles } from "./login.styles"
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import { COLORS, images } from "../../constants"
+import { isEmailValid } from "../../authUtils"
+
 
 const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -31,14 +35,17 @@ const Login = () => {
           <InputText 
             placeholder={ 'Enter your email address' }
             autoFocus={ true }
-            textValue={ '' }
-            handleOnChange={ () => {} }
+            handleOnChange={ (text) => { setEmail(text) } }
+            textValue={ email }
           />
           <InputText 
             placeholder={ 'Your password' }
             autoFocus={ false }
-            textValue={ '' }
-            handleOnChange={ () => {} }
+            handleOnChange={ (text) => { 
+              text.trim() === '' ? setPassword('') : setPassword(text.trim())
+              } 
+            }
+            textValue={ password }
           />
         </View>
         <View style={ loginStyles.forgotPasswordContainer}>
@@ -48,7 +55,16 @@ const Login = () => {
           <Button 
             title={ 'Sign in'}
             isDisabled={ false }
-            handlePress={ () => {} }
+            handlePress={ () => {
+              if (isEmailValid(email) && password.trim() !== '') {
+                router.push('/dashboard/Dashboard')
+                setEmail('')
+                setPassword('')
+              } else {
+                alert('Please enter a valid email and password')
+                setPassword('')
+              }
+            } }
           />
         </View>
         <View style={ loginStyles.bottomTextContainer }>

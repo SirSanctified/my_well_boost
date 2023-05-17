@@ -3,9 +3,7 @@ const COLORS =  {
   btnColor: "#6425CB",
   btnText: "#ffffff",
   bgProfile: "#cccccc",
-  bgList: "E6E6E6",
-  bgRecommendations: "",
-  profileColor: "",
+  bgList: "#E6E6E6",
 }
 
 const SIZES = {

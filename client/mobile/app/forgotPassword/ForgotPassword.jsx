@@ -4,10 +4,13 @@ import { Button } from '../../components/Button/Button'
 import InputText from '../../components/InputText/InputText'
 import { forgotPasswordStyles } from "./forgotPassword.styles"
 import { images, COLORS } from "../../constants"
+import { useState } from "react"
+import { isEmailValid } from "../../authUtils"
 
 
 const ForgotPassword = () => {
   const router = useRouter()
+  const [email, setEmail] = useState('')
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen
@@ -34,15 +37,21 @@ const ForgotPassword = () => {
           <InputText 
             autoFocus={ true }
             placeholder={ 'Enter your email address' }
-            textValue={ '' }
-            handleOnChange={() => {}}
+            handleOnChange={(text) => {setEmail(text)}}
+            textValue={ email }
           />
         </View>
         <View>
           <Button 
             title={ 'Reset Password' }
             isDisabled={ false }
-            handlePress={ () => router.push('/login/Login')}
+            handlePress={ () => {
+              if (isEmailValid(email)) {
+                router.push('/login/Login')
+              } else {
+                alert('Please enter a valid email address')
+              }
+            }}
           />
         </View>
       </View>

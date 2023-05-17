@@ -5,10 +5,13 @@ import { images, COLORS } from '../../constants'
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import styles from '../../styles/index.styles'
+import { useState } from 'react'
 
 
 const History = () => {
   const router = useRouter()
+  const [history, setHistory] = useState('')
+  const [goals, setGoals] = useState('')
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen 
@@ -31,15 +34,15 @@ const History = () => {
           <Text style={ historyStyles.headerText }>Let's work on getting your lifestyle and health history and your goals.</Text>
           <InputText 
             placeholder={ 'Brief us on your health and wellness history' }
-            handleOnChange={ () => {} }
-            textValue={ '' }
+            handleOnChange={ (text) => { text.trim() === '' ? setHistory(''): setHistory(text.trim())} }
+            textValue={ history }
             autoFocus={ true }
             lines={ 5 }
           />
           <InputText 
             placeholder={ 'What are your health goals?' }
-            handleOnChange={ () => {} }
-            textValue={ '' }
+            handleOnChange={ (text) => { text.trim() === '' ? setGoals('') : setGoals(text.trim())} }
+            textValue={ goals }
             autoFocus={ false }
             lines={ 5 }
           />
@@ -47,7 +50,16 @@ const History = () => {
         <View style={ historyStyles.buttonContainer}>
           <Button
             title={ 'Submit' }
-            handlePress={ () => {router.push('/dasboard/Dashboard')} }
+            handlePress={ () => {
+              if (history !== '' && goals !== '') {
+                router.push('/dashboard/Dashboard')
+                setGoals('')
+                setHistory('')
+              } else {
+                alert('Please fill in all fields so we can help you better')
+              }
+            }
+            }
             isDisabled={ false }
           />
         </View>

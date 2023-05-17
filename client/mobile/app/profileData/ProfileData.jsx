@@ -5,9 +5,21 @@ import { Button } from '../../components/Button/Button'
 import { COLORS, images } from '../../constants'
 
 import { profileDataStyles } from './profileData.styles'
+import { useState } from 'react'
 
 const ProfileData = () => {
   const router = useRouter()
+  const [firstName, setFirstName] = useState('')
+  const [middleName, setMiddleName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [gender, setGender] = useState('')
+  const [dob, setDob] = useState('')
+
+  const validateDob = (dob) => {
+    const dobRegex = /\d{4}-\d{2}-\d{2}/
+    return dobRegex.test(dob)
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen 
@@ -29,39 +41,50 @@ const ProfileData = () => {
         <View style={ profileDataStyles.inputContainer }>
           <InputText
             placeholder='First Name'
-            handleOnChange={() => {}}
-            textValue={''}
+            handleOnChange={(text) => { text.trim() === '' ? setFirstName('') : setFirstName(text.trim())}}
+            textValue={firstName}
             autoFocus={true}
           />
           <InputText
             placeholder='Middle Name (Optional)'
-            handleOnChange={() => {}}
+            handleOnChange={(text) => { setMiddleName(text) }}
             autoFocus={false}
-            textValue={''}
+            textValue={ middleName }
           />
           <InputText
             placeholder='Last Name'
-            handleOnChange={() => {}}
+            handleOnChange={(text) => { text.trim() === '' ? setLastName('') : setLastName(text.trim())}}
             autoFocus={false}
-            textValue={''}
+            textValue={lastName}
           />
           <InputText
             placeholder='Gender'
-            handleOnChange={() => {}}
+            handleOnChange={(text) => { text.trim() === '' ? setGender('') : setGender(text.trim())}}
             autoFocus={false}
-            textValue={''}
+            textValue={ gender }
           />
           <InputText
             placeholder='Date of Birth (YYYY-MM-DD)'
-            handleOnChange={() => {}}
+            handleOnChange={(text) => { text.trim() === '' ? setDob('') : setDob(text)}}
             autoFocus={false}
-            textValue={''}
+            textValue={dob}
           />
         </View>
         <View style={ profileDataStyles.buttonContainer }>
           <Button
             title={'Submit'}
-            handlePress={() => {router.push('/history/History')}}
+            handlePress={() => {
+              if (firstName!== '' && lastName !== '' && gender !== '' && validateDob(dob)) {
+                router.push('/history/History')
+                setDob('')
+                setFirstName('')
+                setGender('')
+                setLastName('')
+                setMiddleName('')
+              } else {
+                alert('Please make sure first name, last name, gender and date of birth are not empty')
+              }
+            }}
             isDisabled={ false }
           />
         </View>
