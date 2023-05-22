@@ -7,7 +7,7 @@ import { updateRecommendationController } from '../controllers/updateRecommendat
 const recommendationRouter = express.Router()
 
 recommendationRouter
-  .get('/:recommendationId', getRecommentationController)
+  .get('/:userId', getRecommentationController)
   .post('/new/:userId', createRecommendation)
   .put('/update/:recommendationId', updateRecommendationController)
 

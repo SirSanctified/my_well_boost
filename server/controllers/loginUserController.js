@@ -55,7 +55,15 @@ export const loginUserController = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     })
     // send response
-    res.status(200).json({ "token": accessToken, })
+    const userData = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      dateOfBirth: user.dateOfBirth,
+      gender: user.gender,
+    }
+    res.status(200).json({ "token": accessToken, "user": userData })
   } catch (error) {
     res.status(500).json({ "error": error.message, })
     console.error(error.message)

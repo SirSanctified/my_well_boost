@@ -67,7 +67,7 @@ const Dashboard = () => {
             placeholder="Add another activity"
           />
           <Pressable style={ dashboardStyles.addActivityButton }>
-            <Text style={ dashboardStyles.btnText }>+</Text>
+            <Text style={ dashboardStyles.btnText }>Add</Text>
           </Pressable>
         </View>
         <View style={{ marginVertical: 20 }}>

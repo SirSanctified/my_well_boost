@@ -22,10 +22,10 @@ const loginStyles = StyleSheet.create({
     textAlign: 'center'
   },
   inputContainer: {
-    marginTop: 10
+    marginTop: 20
   },
   buttonContainer: {
-    marginTop: 0
+    marginTop: 20
   },
   forgotPasswordContainer: {
     marginVertical: 24,

@@ -37,16 +37,16 @@ export const sendEmail = (user, {subject, message}) => {
 }
 
 
-const createActivationLink = async (user) => {
-     // create onetime activation link
-     const activationToken = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET_ACTIVATION + user.active,
-      { expiresIn: "30m" }
-    )
-    const activationLink = `http://localhost:4500/auth/activate/${user.id}/${activationToken}`
-    return activationLink
-}
+// const createActivationLink = async (user) => {
+//      // create onetime activation link
+//      const activationToken = jwt.sign(
+//       { id: user.id, email: user.email },
+//       process.env.JWT_SECRET_ACTIVATION + user.active,
+//       { expiresIn: "30m" }
+//     )
+//     const activationLink = `http://localhost:4500/auth/activate/${user.id}/${activationToken}`
+//     return activationLink
+// }
 
 
 export const registerUserController = async (req, res) => {
@@ -61,7 +61,7 @@ export const registerUserController = async (req, res) => {
 
   try {
     // create table if it doesn't exist
-    await sequelize.sync({ force: false })
+    await sequelize.sync({ force: true })
     // check if user with given email already exists in the database
     const user = await User.findOne({ where: { email: email } })
     if (user) {
@@ -72,6 +72,7 @@ export const registerUserController = async (req, res) => {
     return res.status(500).json({ "error": error.message })
   }
   // hash the password and save user to database
+  const activationToken = uuidv4().split('-')[0].toUpperCase()
   try {
     const hashedPassword = await bcrypt.hash(password, 10)
     const newUser = await User.create({
@@ -82,22 +83,21 @@ export const registerUserController = async (req, res) => {
       password: hashedPassword,
       dateOfBirth: dateOfBirth,
       gender: gender,
+      activationToken: activationToken,
     })
   
-    // create activation link
-    const activationLink = await createActivationLink(newUser)
-    console.log(activationLink)
+    console.log(activationToken)
 
     // send email
     const subject = 'Activate your Account'
     const message = `
     <h1>Dear ${newUser.firstName},</h1>
 
-    <p>We are delighted to have you as a new member of our community. To start using our services, please activate your account by clicking on the link below:</p>
+    <p>We are delighted to have you as a new member of our community. To start using our services, please activate your account by entering the code below in your application:</p>
     
-    <a href="${activationLink}">${activationLink}</a>
+    <p>Activation Token: ${activationToken}</p>
     
-    <p>Please note that this link will expire in 24 hours. If you encounter any issues during the activation process, please do not hesitate to contact our support team at support@mywellboost.com.</p>
+    <p>Please note that this token works only once. If you encounter any issues during the activation process, please do not hesitate to contact our support team at support@mywellboost.com.</p>
     
     <p>Thank you for choosing our platform. We look forward to providing you with the best experience possible.</p>
     
@@ -117,19 +117,19 @@ export const registerUserController = async (req, res) => {
 
 
 export const activateUserController = async (req, res) => {
-  const { activationToken, userId } = req.params
+  const { activationToken } = req.body
   if (!activationToken) {
     return res.status(400).json({ "error": "Token not found" })
   }
   try {
-    const user = await User.findOne({ where: { id: userId } })
+    const user = await User.findOne({ where: { activationToken: activationToken } })
     if (!user) {
       return res.status(404).json({ "error": "User not found" })
     }
-    const decoded = jwt.verify(activationToken, process.env.JWT_SECRET_ACTIVATION + user.active)
-    if (decoded) {
+    if (user.activationToken === activationToken) {
       // activate user and save to database
       user.active = true
+      user.activationToken = null
       await user.save()
       // send email to user
       const subject = 'Account Activation Successful'
@@ -149,7 +149,7 @@ export const activateUserController = async (req, res) => {
       sendEmail(user, { subject, message })
       res.status(200).json({ "message": "User activated successfully", "user": user.toJSON() })
     } else {
-      res.sendStatus(400)
+      res.status(400).json({"error": "Invalid token"})
     }
   } catch (error) {
     res.status(400).json({ "error": error.message })

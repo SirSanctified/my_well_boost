@@ -57,7 +57,7 @@ export const createRecommendation = async(req, res) => {
       await user.save()
       const recommendations = recommendedModifications.split("$")
       const cleanRecommendations = []
-      recommendations.forEach((rec) => cleanRecommendations.push(rec.trim()))
+      recommendations.forEach((rec) => cleanRecommendations.push({recommendation: rec.trim(), id: uuidv4()}))
       res.status(201).json({ "recommendations": JSON.stringify(cleanRecommendations), "id": recommendation.id})
       // cleanRecommendations.sforEach(rec => console.log(rec))
     } catch (error) {

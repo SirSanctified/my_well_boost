@@ -1,6 +1,5 @@
 import { DataTypes, Model, Deferrable } from "sequelize"
 import {sequelize} from "../config/db.js"
-import Recommendation from "./recommendationModel.js"
 
 
 class User extends Model {}
@@ -40,6 +39,10 @@ User.init({
     refreshToken: {
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    activationToken: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
     active: {
         type: DataTypes.BOOLEAN,

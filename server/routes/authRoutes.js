@@ -9,7 +9,7 @@ const authRouter = express.Router()
 
 authRouter
   .post('/register', registerUserController)
-  .post('/activate/:userId/:activationToken', activateUserController)
+  .post('/activate', activateUserController)
   .get('/logout', handleLogout)
   .post('/login', loginUserController)
   .get('/refresh-token', handleRefreshToken)

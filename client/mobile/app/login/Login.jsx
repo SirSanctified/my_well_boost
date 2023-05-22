@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, Image } from "react-native"
+import { SafeAreaView, View, Text, Image, ActivityIndicator } from "react-native"
 import { useRouter, Link, Stack } from 'expo-router'
 import { useState } from "react"
 
@@ -6,12 +6,13 @@ import { loginStyles } from "./login.styles"
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import { COLORS, images } from "../../constants"
-import { isEmailValid } from "../../authUtils"
+import { isEmailValid, signIn } from "../../utils"
 
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -39,13 +40,14 @@ const Login = () => {
             textValue={ email }
           />
           <InputText 
-            placeholder={ 'Your password' }
+            placeholder={ 'Your password (must be 8 characters or more)' }
             autoFocus={ false }
             handleOnChange={ (text) => { 
               text.trim() === '' ? setPassword('') : setPassword(text.trim())
               } 
             }
             textValue={ password }
+            password={ true }
           />
         </View>
         <View style={ loginStyles.forgotPasswordContainer}>
@@ -55,18 +57,12 @@ const Login = () => {
           <Button 
             title={ 'Sign in'}
             isDisabled={ false }
-            handlePress={ () => {
-              if (isEmailValid(email) && password.trim() !== '') {
-                router.push('/dashboard/Dashboard')
-                setEmail('')
-                setPassword('')
-              } else {
-                alert('Please enter a valid email and password')
-                setPassword('')
-              }
+            handlePress={ async () => {
+              await signIn(email, password, setIsLoading, router)
             } }
           />
         </View>
+        <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
         <View style={ loginStyles.bottomTextContainer }>
           <Text style={ loginStyles.bottomText }>Don't have an account? <Link href={'/signup/SignUp'} style={ loginStyles.linkText }>Register</Link></Text>
         </View>

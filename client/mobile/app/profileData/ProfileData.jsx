@@ -1,19 +1,21 @@
-import { SafeAreaView, View, Text, Image } from 'react-native'
-import { useRouter, Stack } from 'expo-router'
+import { SafeAreaView, View, Text, Image, Alert, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
+import { useRouter, Stack, useLocalSearchParams } from 'expo-router'
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import { COLORS, images } from '../../constants'
 
 import { profileDataStyles } from './profileData.styles'
 import { useState } from 'react'
+import { signUp } from '../../utils'
 
 const ProfileData = () => {
   const router = useRouter()
   const [firstName, setFirstName] = useState('')
-  const [middleName, setMiddleName] = useState('')
   const [lastName, setLastName] = useState('')
   const [gender, setGender] = useState('')
   const [dob, setDob] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const { email, password } = useLocalSearchParams()
 
   const validateDob = (dob) => {
     const dobRegex = /\d{4}-\d{2}-\d{2}/
@@ -21,7 +23,7 @@ const ProfileData = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <Stack.Screen 
         options={{
           headerStyle: { backgroundColor: COLORS.bgPrimary },
@@ -40,19 +42,13 @@ const ProfileData = () => {
         </View>
         <View style={ profileDataStyles.inputContainer }>
           <InputText
-            placeholder='First Name'
+            placeholder='First Name (must be more than 3 characters)'
             handleOnChange={(text) => { text.trim() === '' ? setFirstName('') : setFirstName(text.trim())}}
             textValue={firstName}
             autoFocus={true}
           />
           <InputText
-            placeholder='Middle Name (Optional)'
-            handleOnChange={(text) => { setMiddleName(text) }}
-            autoFocus={false}
-            textValue={ middleName }
-          />
-          <InputText
-            placeholder='Last Name'
+            placeholder='Last Name (must be more than 3 characters)'
             handleOnChange={(text) => { text.trim() === '' ? setLastName('') : setLastName(text.trim())}}
             autoFocus={false}
             textValue={lastName}
@@ -73,23 +69,22 @@ const ProfileData = () => {
         <View style={ profileDataStyles.buttonContainer }>
           <Button
             title={'Submit'}
-            handlePress={() => {
-              if (firstName!== '' && lastName !== '' && gender !== '' && validateDob(dob)) {
-                router.push('/history/History')
-                setDob('')
-                setFirstName('')
-                setGender('')
-                setLastName('')
-                setMiddleName('')
+            handlePress={async () => {
+              if (firstName.length > 3 && lastName.length > 3 && gender.length > 3 && validateDob(dob)) {
+                // signup user
+                await signUp(
+                  firstName, lastName, email, password, dob, gender, setIsLoading, router
+                )
               } else {
-                alert('Please make sure first name, last name, gender and date of birth are not empty')
+                Alert.alert('','Please make sure first name, last name, gender and date of birth are not empty')
               }
             }}
             isDisabled={ false }
           />
+          <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
         </View>
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 

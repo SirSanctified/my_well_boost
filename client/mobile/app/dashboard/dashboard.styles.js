@@ -62,7 +62,7 @@ const dashboardStyles = StyleSheet.create({
   },
   addActivityInput: {
     width: 321,
-    height: 36,
+    height: 40,
     backgroundColor: '#d9d9d9',
     borderRadius: 10,
     padding: 10,
@@ -71,16 +71,13 @@ const dashboardStyles = StyleSheet.create({
   addActivityButton: {
     borderRadius: 10,
     backgroundColor: '#d9d9d9',
-    width: 43,
-    height: 36,
+    width: 50,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center'
   },
   btnText: {
     color: COLORS.btnColor,
-    fontSize: 38,
-    fontWeight: 'bold',
-    justifyContent: 'center'
   }
 })
 

@@ -5,7 +5,7 @@ import InputText from '../../components/InputText/InputText'
 import { forgotPasswordStyles } from "./forgotPassword.styles"
 import { images, COLORS } from "../../constants"
 import { useState } from "react"
-import { isEmailValid } from "../../authUtils"
+import { isEmailValid } from "../../utils"
 
 
 const ForgotPassword = () => {
