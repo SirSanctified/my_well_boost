@@ -16,7 +16,13 @@ const dashboardStyles = StyleSheet.create({
     width: '95%',
     height: 250,
     borderRadius: 10,
-    padding: 10,
+    paddingHorizontal: 10,
+  },
+  recommendation: {
+    color: '#000',
+    fontSize: 16,
+    marginVertical: 5,
+    lineHeight: 20,
   },
   activity: {
     backgroundColor: '#d9d9d9',

@@ -6,15 +6,8 @@ export const getRecommentationController = async(req, res) => {
   try {
     const recommendation = await Recommendation.findOne({where: {UserId: userId}})
     if (recommendation) {
-      const cleanRecommendations = {
-        healthHistory: recommendation.healthHistory,
-        healthGoals: recommendation.healthGoals,
-        recommendations: recommendation.recommendedModifications.split("$").forEach((rec) => {
-          return {recommendation: rec, id: uuidv4()}
-        })
-      }
-
-      res.status(200).json(cleanRecommendations)
+      const recommendations = recommendation.recommendedModifications.split('$').filter(rec => rec !== '')
+      res.status(200).json(recommendations)
     } else {
         res.sendStatus(404)
     }

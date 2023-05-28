@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, Image, Alert, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, Alert, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import { useRouter, Stack, useLocalSearchParams } from 'expo-router'
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'

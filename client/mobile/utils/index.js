@@ -64,13 +64,14 @@ const signIn = async(email, password, setIsLoading, router) => {
       })
       if (response.status === 200) {
         setIsLoading(false)
-        router.push({pathname: '/dashboard/Dashboard', params: { user: response.data}})
+        const {token, user} = response.data
+        router.push({pathname: '/history/History', params: { token: token, userId: user.id }})
       } else {
         throw new Error('Something went wrong. Please try again.')
       }
     } catch (err) {
       console.log(err)
-      Alert.alert('Error', err.response.data)
+      Alert.alert('', err.response.data.error)
       setIsLoading(false)
     }
   } else {
@@ -78,22 +79,23 @@ const signIn = async(email, password, setIsLoading, router) => {
   }
 }
 
-const createRecommendation = async(healthHistory, healthGoals, userId, setIsLoading, router) => {
+const createRecommendation = async(healthHistory, healthGoals, userId, token, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.post(`${baseURL}recommendations/new/${userId}`, {
       healthHistory: healthHistory,
       healthGoals: healthGoals
-    })
+    }, { headers: {"Authorization" : `Bearer ${token}`}})
     if (response.status === 201) {
       setIsLoading(false)
-      router.push({pathname: '/dashboard/Dashboard', params: { recommendations: response.data }})
+      router.push({pathname: '/dashboard/Dashboard', params: { userId: userId, token: token }})
     } else {
       throw new Error('Something went wrong. Please try again.')
     }
-  } catch (error) {
-    Alert.alert('Error', error.response.data)
-    console.log(error)
+  } catch (err) {
+    Alert.alert('', err.response.data.error)
+    setIsLoading(false)
+    // console.log(err)
   }
 }
 
@@ -110,9 +112,27 @@ const activate = async(token, setIsLoading, router) => {
       throw new Error('Something went wrong. Please try again.')
     }
   } catch(err) {
-    Alert.alert('Error', err.response.data)
-    console.log(err)
+    Alert.alert('Error', err.response.data.error)
+    console.log(err.response.data.error)
+    setIsLoading(false)
   }
 }
 
-export { areCredentialsValid, isEmailValid, isPasswordSimilar, signUp, signIn, createRecommendation, activate }
+const getRecommendations = async(userId, token, setIsLoading, setRecommendations) => {
+  try {
+    setIsLoading(true)
+    const response = await axios.get(`${baseURL}recommendations/${userId}`, { headers: {"Authorization" : `Bearer ${token}`}})
+    if (response.status === 200) {
+      setIsLoading(false)
+      setRecommendations(response.data)
+    } else {
+      throw new Error('Something went wrong. Please try again')
+    }
+  } catch(error) {
+    Alert.alert('Error', error.response.data.error)
+  }
+}
+
+export { 
+  areCredentialsValid, isEmailValid, isPasswordSimilar, signUp, signIn, createRecommendation, activate, getRecommendations
+}

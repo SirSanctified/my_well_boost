@@ -6,7 +6,7 @@ import { loginStyles } from "./login.styles"
 import InputText from '../../components/InputText/InputText'
 import { Button } from '../../components/Button/Button'
 import { COLORS, images } from "../../constants"
-import { isEmailValid, signIn } from "../../utils"
+import { signIn } from "../../utils"
 
 
 const Login = () => {
@@ -16,13 +16,6 @@ const Login = () => {
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
-     <Stack.Screen 
-      options={{
-        headerStyle: { backgroundColor: COLORS.bgPrimary },
-        headerShadowVisible: false,
-        headerTitle: '',
-      }}
-     /> 
       <View style={ loginStyles.container }>
         <Image 
           source={ images.login }

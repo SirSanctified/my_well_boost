@@ -13,6 +13,9 @@ export const sendEmail = (user, {subject, message}) => {
   //create a nodemailer transport
   const transport = nodemailer.createTransport({
     service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
@@ -124,7 +127,7 @@ export const activateUserController = async (req, res) => {
   try {
     const user = await User.findOne({ where: { activationToken: activationToken } })
     if (!user) {
-      return res.status(404).json({ "error": "User not found" })
+      return res.status(404).json({ "error": "Token not found" })
     }
     if (user.activationToken === activationToken) {
       // activate user and save to database

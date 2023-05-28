@@ -29,18 +29,18 @@ export const loginUserController = async (req, res) => {
   const {email, password} = req.body
   // check if email and password are provided
   if (!email || !password) {
-    return res.status(400).json({error: "Please provide email and password"})
+    return res.status(400).json({"error": "Please provide email and password"})
   }
   // check if user with given email exists in the database
   try {
     const user = await User.findOne({where: {email: email}})
-    if (!user) return res.sendStatus(401)
+    if (!user) return res.status(401).json({"error": "Incorrect email or password"})
     // check if user has verified email address
     if (!user.active) return res.status(400).json({"error": "Please verify your email address first"})
     // check if password is correct
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
     if (!isPasswordCorrect) {
-      return res.status(401).json({error: "Incorrect email or password"})
+      return res.status(401).json({"error": "Incorrect email or password"})
     }
     // create access token and refresh token
     const { accessToken, refreshToken } = createJWTs(user)

@@ -1,25 +1,14 @@
-import { SafeAreaView, ScrollView, View, FlatList, Text, Image, Pressable, TextInput } from "react-native"
-import { Stack, useRouter } from 'expo-router'
-import { v4 as uuidv4 } from 'uuid'
+import { SafeAreaView, ScrollView, View, FlatList, Text, Image, Pressable, TextInput, ActivityIndicator } from "react-native"
+import {useEffect, useState } from "react"
+import axios from "axios"
+import {useRouter, useLocalSearchParams } from 'expo-router'
 import { dashboardStyles } from "./dashboard.styles"
 import { COLORS, images } from "../../constants"
 import styles from '../../styles/index.styles'
+import { getRecommendations } from "../../utils"
 
-const fakeData = [
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iure!',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iure!',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iure!',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iure!',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iure!',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iure!',
-]
 
-const tdata = [
-  'Lorem ipsum dolor sit amet.',
-  'Lorem ipsum dolor sit amet consectetur.',
-  'Lorem ipsum dolor sit.',
-  'Lorem ipsum dolor sit amet consectetur adipisicing amet.'
-]
+const tdata = []
 
 const ActivityItem = ({ item }) => {
   return (
@@ -33,16 +22,15 @@ const ActivityItem = ({ item }) => {
 }
 const Dashboard = () => {
   const router = useRouter()
-
+  const [recommendations, setRecommendations] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const { userId, token } = useLocalSearchParams()
+  useEffect( () => {
+    (async () =>
+      await getRecommendations(userId, token, setIsLoading, setRecommendations))()
+  }, [])
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Stack.Screen 
-        options={{
-          headerStyle: { backgroundColor: COLORS.bgPrimary },
-          headerShadowVisible: false,
-          headerTitle: ''
-        }}
-      />
       <ScrollView style={dashboardStyles.container} contentContainerStyle={{ alignItems: 'center'}} showsVerticalScrollIndicator={ false }>
         <View style={ styles.profileContainer }>
           <Image 
@@ -54,10 +42,11 @@ const Dashboard = () => {
         </View>
         <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
         <View style={ dashboardStyles.listContainer }>
-          <FlatList 
-            data={ fakeData }
-            renderItem={ ({ item }) => (<Text style={{ marginVertical: 5 }}>{ item }</Text>) }
-            keyExtractor={ item => { item + Math.random() } }
+          <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
+          <FlatList
+            data={ recommendations }
+            renderItem={({item}) => ( <Text style={ dashboardStyles.recommendation }>{ item.trim() }</Text> )}
+            keyExtractor={ item => item }
           />
         </View>
         <Text style={ dashboardStyles.header }>Today's Activities</Text>
