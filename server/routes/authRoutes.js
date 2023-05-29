@@ -10,7 +10,7 @@ const authRouter = express.Router()
 authRouter
   .post('/register', registerUserController)
   .post('/activate', activateUserController)
-  .get('/logout', handleLogout)
+  .get('/logout/:id', handleLogout)
   .post('/login', loginUserController)
   .get('/refresh-token', handleRefreshToken)
   .post('/forgot-password', forgotPassword)

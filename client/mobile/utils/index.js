@@ -3,7 +3,7 @@ import { Alert } from "react-native"
 import { useAuth } from "../context/auth"
 
 
-const baseURL = 'http://192.168.191.40:4500/'
+const baseURL = 'http://192.168.1.128:4500/'
 
 const isPasswordSimilar = (password1, password2) => {
   if (password1.length < 8 || password2.length < 8) {
@@ -169,8 +169,26 @@ const forgotPassword = async (email, setIsLoading, router) => {
   }
 }
 
+const logoutUser = async (id, token, logout, setIsLoading, router) => {
+  try {
+    setIsLoading(true)
+    const response = await axios.get(`${baseURL}auth/logout/${id}`, { headers: {"Authorization" : `Bearer ${token}`}})
+    if (response.status === 204) {
+      setIsLoading(false)
+    } else {
+      throw new Error('Something went wrong. Please try again')
+    }
+  } catch(err) {
+    setIsLoading(false)
+  } finally {
+    await logout()
+    router.replace('/')
+  }
+}
+
 export { 
   areCredentialsValid, isEmailValid, isPasswordSimilar,
   signUp, signIn, createRecommendation, activate,
-  getRecommendations, resetPassword, forgotPassword
+  getRecommendations, resetPassword, forgotPassword,
+  logoutUser
 }

@@ -6,9 +6,8 @@ export const handleLogout = async(req, res) => {
     const cookies = req.cookies
 
     if (!cookies?.refreshToken) return res.sendStatus(204)
-    const refreshToken = cookies.refreshToken
     // check if token is in the database
-    const foundUser = await User.findOne({where: {refreshToken: refreshToken}})
+    const foundUser = await User.findOne({where: {id: req.params.id}})
     if (!foundUser) {
         res.clearCookie('refreshToken', {httponly: true, maxAge: 30 * 24 * 60 * 60 * 1000})
         return res.sendStatus(204)

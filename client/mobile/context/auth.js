@@ -22,7 +22,7 @@ function useProtectedRoute(user) {
       !inAuthGroup
     ) {
       // Redirect to the sign-in page.
-      router.replace("/");
+      router.replace("/Home");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
       router.replace("/dashboard/Dashboard");
@@ -42,8 +42,9 @@ export function Provider(props) {
       }
     });
   }, []);
-
+  
   useProtectedRoute(user);
+
 
   const login = async (token, user) => {
     await SecureStore.setItemAsync("user", JSON.stringify({ token, ...user }));

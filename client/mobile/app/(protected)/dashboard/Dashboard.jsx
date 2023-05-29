@@ -25,17 +25,24 @@ const Dashboard = () => {
   const router = useRouter()
   const [recommendations, setRecommendations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isUserAvailable, setIsUserAvailable] = useState(false)
   const { user } = useAuth()
-  const userId = user.id
-  const token = user.token
 
   useEffect( () => {
-    (async () =>
-      await getRecommendations(userId, token, setIsLoading, setRecommendations))()
+    (async () => {
+      if (user) {
+        setIsUserAvailable(true)
+        await getRecommendations(userId, token, setIsLoading, setRecommendations)
+      } else {
+        setIsUserAvailable(false)
+      }
+    })()
   }, [])
+  const userId = user ? user.id : null
+  const token = user ? user.token : null
   
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    ( isUserAvailable ? <SafeAreaView style={{ flex: 1 }}>
       <View style={dashboardStyles.container}> 
         {/* <View style={ styles.profileContainer }>
           <Image 
@@ -47,7 +54,6 @@ const Dashboard = () => {
         </View> */}
         <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
         <View style={ dashboardStyles.listContainer }>
-          <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
           <FlatList
             data={ recommendations }
             renderItem={({item}) => ( <Text style={ dashboardStyles.recommendation }>{ item.trim() }</Text> )}
@@ -72,7 +78,7 @@ const Dashboard = () => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </SafeAreaView>: <View style={dashboardStyles.container}><Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text></View>)
   )
 }
 

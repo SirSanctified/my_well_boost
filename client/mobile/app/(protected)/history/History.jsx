@@ -1,11 +1,11 @@
 import { SafeAreaView, View, Text, Image, ActivityIndicator} from 'react-native'
-import { useRouter, Stack, useLocalSearchParams } from 'expo-router'
+import { useRouter,} from 'expo-router'
 import { historyStyles } from './history.styles'
 import { images, COLORS } from '../../../constants'
 import InputText from '../../../components/InputText/InputText'
 import { Button } from '../../../components/Button/Button'
 import styles from '../../../styles/index.styles'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createRecommendation } from '../../../utils'
 import { useAuth } from '../../../context/auth'
 
@@ -16,9 +16,22 @@ const History = () => {
   const [history, setHistory] = useState('')
   const [goals, setGoals] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const userId = user.id
+  const [isUserAvailable, setIsUserAvailable] = useState(false)
+  useEffect( () => {
+    (async () => {
+      if (user) {
+        setIsUserAvailable(true)
+      } else {
+        setIsUserAvailable(false)
+      }
+    })()
+  }, [])
+
+  const userId = user?.id
+  const token = user?.token
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    ( isUserAvailable ? <SafeAreaView style={{ flex: 1 }}>
       <View style={ historyStyles.container}>
         <View style={ styles.profileContainer}>
           <Image
@@ -26,7 +39,7 @@ const History = () => {
             source={ images.defaultProfile }
             resizeMode='contain'
           />
-          <Text style={ styles.profileText}>{user.firstName} {user.lastName}</Text>
+          <Text style={ styles.profileText}>{user?.firstName} {user?.lastName}</Text>
         </View>
         <View style={ historyStyles.historyContainer}>
           <Text style={ historyStyles.headerText }>Let's work on getting your lifestyle and health history and your goals.</Text>
@@ -61,7 +74,7 @@ const History = () => {
           <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
         </View>
       </View>
-    </SafeAreaView>
+    </SafeAreaView>: <View style={historyStyles.container}><Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text></View>)
   )
 }
 
