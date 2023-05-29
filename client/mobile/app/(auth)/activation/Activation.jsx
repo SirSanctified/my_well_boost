@@ -1,9 +1,9 @@
 import { SafeAreaView, View, Text, ActivityIndicator, Alert } from "react-native"
-import { Button } from "../../components/Button/Button"
-import InputText from "../../components/InputText/InputText"
-import { activate } from '../../utils'
+import { Button } from "../../../components/Button/Button"
+import InputText from "../../../components/InputText/InputText"
+import { activate } from '../../../utils'
 
-import { COLORS } from "../../constants"
+import { COLORS } from "../.././../constants"
 import { useRouter } from "expo-router"
 import { useState } from "react"
 import { activationStyles } from "./activation.styles"

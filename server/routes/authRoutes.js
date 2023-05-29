@@ -14,6 +14,6 @@ authRouter
   .post('/login', loginUserController)
   .get('/refresh-token', handleRefreshToken)
   .post('/forgot-password', forgotPassword)
-  .post('/reset-password/:userId/:token', resetPassword)
+  .post('/reset-password/:userId/', resetPassword)
 
 export default authRouter

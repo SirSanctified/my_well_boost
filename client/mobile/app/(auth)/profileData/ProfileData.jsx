@@ -1,12 +1,12 @@
 import { View, Text, Image, Alert, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import { useRouter, Stack, useLocalSearchParams } from 'expo-router'
-import InputText from '../../components/InputText/InputText'
-import { Button } from '../../components/Button/Button'
-import { COLORS, images } from '../../constants'
+import InputText from '../../../components/InputText/InputText'
+import { Button } from '../../../components/Button/Button'
+import { COLORS, images } from '../../../constants'
 
 import { profileDataStyles } from './profileData.styles'
 import { useState } from 'react'
-import { signUp } from '../../utils'
+import { signUp } from '../../../utils'
 
 const ProfileData = () => {
   const router = useRouter()

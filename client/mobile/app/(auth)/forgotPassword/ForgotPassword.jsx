@@ -1,15 +1,16 @@
-import { SafeAreaView, View, Text, Image } from "react-native"
+import { SafeAreaView, View, Text, Image, ActivityIndicator } from "react-native"
 import { useRouter, Stack } from 'expo-router'
-import { Button } from '../../components/Button/Button'
-import InputText from '../../components/InputText/InputText'
+import { Button } from '../../../components/Button/Button'
+import InputText from '../../../components/InputText/InputText'
 import { forgotPasswordStyles } from "./forgotPassword.styles"
-import { images, COLORS } from "../../constants"
+import { images, COLORS } from "../../../constants"
 import { useState } from "react"
-import { isEmailValid } from "../../utils"
+import { forgotPassword, isEmailValid } from "../../../utils"
 
 
 const ForgotPassword = () => {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -45,14 +46,15 @@ const ForgotPassword = () => {
           <Button 
             title={ 'Reset Password' }
             isDisabled={ false }
-            handlePress={ () => {
+            handlePress={ async () => {
               if (isEmailValid(email)) {
-                router.push('/login/Login')
+                await forgotPassword(email, setIsLoading, router)
               } else {
                 alert('Please enter a valid email address')
               }
             }}
           />
+          <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
         </View>
       </View>
     </SafeAreaView>

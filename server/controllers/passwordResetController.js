@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+import { v4 as uuidv4 } from "uuid"
 import {User} from "../models/associations.js"
 import { sendEmail } from "./registerUserController.js"
 
@@ -8,33 +9,27 @@ export const forgotPassword = async(req, res) => {
   try {
     const user = await User.findOne({ where: { email: email}})
     if (!user) return res.status(404).json({ "error": "User with this email does not exist" })
-    // user exist and now create One Time reset link expiring in 10 minutes
-    const secret = process.env.PASSWORD_RESET_SECRET + user.password
-    const payload = {
-      email: user.email,
-      id: user.id
-    }
-    const token = jwt.sign(payload, secret, { expiresIn: '10m' })
-    const link = `http://localhost:4500/auth/reset-password/${user.id}/${token}`
-    console.log(link);
-
+    // user exist and now create One Time reset token
+    const resetCode = uuidv4().split('-')[0].toUpperCase()
+    const resetToken = jwt.sign(
+      { id: user.id, resetCode: resetCode },
+      process.env.PASSWORD_RESET_SECRET + user.password,
+      { expiresIn: "10m"}
+    )
+    console.log(resetCode)
+    user.resetToken = resetToken
+    await user.save()
     // send email
     const subject = 'Reset your password'
     const message = `
     <h1>Dear ${user.firstName},</h1>
 
-    <p>We have received a request to reset your password. To reset your password, please follow the instructions below:</p>
-    <ol>
-      <li>Click on the following link: <a href="${link}">${link}</a></li>
-      <li>Enter your email address associated with your account.</li>
-      <li>Follow the prompts to reset your password.</li>
-    </ol>
-    <p>Note that the link expires in 10 minutes. If you did not request a password reset, please ignore this email.</p>
+    <p>We have received a request to reset your password. To reset your password, please use this code to reset your password: ${resetCode}. The code expires in 10 minutes. If you did not request a password reset, please ignore this email.</p>
 
     <p>Thank you, MyWellBoost Team</p>
     `
     sendEmail(user, {subject, message})
-    res.status(200).json({"message": "Password reset email has been sent"})
+    res.status(200).json({"message": "Password reset email has been sent", "userId": user.id})
   } catch (error) {
     console.error(error)
     res.status(500).json({ "error": error.message })
@@ -42,19 +37,34 @@ export const forgotPassword = async(req, res) => {
 }
 
 export const resetPassword = async(req, res) => {
-  const { userId, token } = req.params
-  const { password } = req.body
+  const { userId } = req.params
+  const { password, resetCode } = req.body
 
   try {
     // check if user with given id exist
+    let isValidCode = false
     const user = await User.findOne({ where: { id: userId } })
-    if (!user) return res.status(404).json({ "error": "Invalid link" })
-    const secret = process.env.PASSWORD_RESET_SECRET + user.password
-    const match = jwt.verify(token, secret)
-    if (match) {
+    if (!user) return res.status(404).json({ "error": "Invalid reset code used" })
+    jwt.verify(
+      user.resetToken,
+      process.env.PASSWORD_RESET_SECRET + user.password,
+      (err, decoded) => {
+          if (err) {
+            console.log(err)
+            return res.status(404).json({ "error": "Invalid reset code used" })
+          }
+          console.log('we are here');
+          console.log('resetCode ' + resetCode + ' decoded ' + decoded.resetCode);
+          if (decoded.resetCode === resetCode) {
+            isValidCode = true
+          }
+        }
+    )
+    if (isValidCode) {
       const hashedPassword = await bcrypt.hash(password, 10)
       // update user password
       user.password = hashedPassword
+      user.resetToken = null
       await user.save()
       // send email to user
       const subject = 'Password Reset Successful'
@@ -71,11 +81,9 @@ export const resetPassword = async(req, res) => {
       `
       sendEmail(user, { subject, message })
       res.status(200).json({ "message": "Password reset successfull" })
-    } else {
-      res.status(400).json({ "error": "Invalid link" })
     }
   } catch (error) {
     console.log(error)
-    res.status(500).json({ "error": error.message })
+    // res.status(500).json({ "error": error.message })
   }
 }

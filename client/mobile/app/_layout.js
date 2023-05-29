@@ -1,14 +1,16 @@
-import { Stack } from 'expo-router'
-import { COLORS } from '../constants'
+import { Stack } from "expo-router";
+import { COLORS } from "../constants"
+import { Provider } from "../context/auth";
 
-const Layout = () => {
+export default function Root() {
   return (
-    <Stack screenOptions={{
-      title:'',
-      headerStyle: { backgroundColor: COLORS.bgPrimary },
-      headerShadowVisible: false,
-    }}/>
-  )
+    <Provider>
+      <Stack screenOptions={{
+        title: '',
+        headerShadowVisible: false,
+        headerStyle: { backgroundColor: COLORS.bgPrimary}
+      }}>
+      </Stack>
+    </Provider>
+  );
 }
-
-export default Layout

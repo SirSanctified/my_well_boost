@@ -1,18 +1,20 @@
 import { SafeAreaView, View, Text, Image, ActivityIndicator } from "react-native"
-import { useRouter, Link, Stack } from 'expo-router'
+import { useRouter, Link} from 'expo-router'
 import { useState } from "react"
 
 import { loginStyles } from "./login.styles"
-import InputText from '../../components/InputText/InputText'
-import { Button } from '../../components/Button/Button'
-import { COLORS, images } from "../../constants"
-import { signIn } from "../../utils"
+import InputText from '../../../components/InputText/InputText'
+import { Button } from '../../../components/Button/Button'
+import { COLORS, images } from "../../../constants"
+import { signIn } from "../../../utils"
+import { useAuth } from "../../../context/auth"
 
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth()
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -51,7 +53,7 @@ const Login = () => {
             title={ 'Sign in'}
             isDisabled={ false }
             handlePress={ async () => {
-              await signIn(email, password, setIsLoading, router)
+              await signIn(email, password, login, setIsLoading, router)
             } }
           />
         </View>

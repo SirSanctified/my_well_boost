@@ -1,5 +1,6 @@
 import axios from "axios"
 import { Alert } from "react-native"
+import { useAuth } from "../context/auth"
 
 
 const baseURL = 'http://192.168.191.40:4500/'
@@ -53,7 +54,7 @@ const signUp = async(firstName, lastName, email, password, dateOfBirth, gender, 
   }
 }
 
-const signIn = async(email, password, setIsLoading, router) => {
+const signIn = async(email, password, login, setIsLoading, router) => {
   if (isEmailValid(email) && password.length >= 8) {
     try {
       setIsLoading(true)
@@ -65,16 +66,18 @@ const signIn = async(email, password, setIsLoading, router) => {
       if (response.status === 200) {
         setIsLoading(false)
         const {token, user} = response.data
-        router.push({pathname: '/history/History', params: { token: token, userId: user.id }})
+        login(token, user)
+        router.push('/history/History')
       } else {
         throw new Error('Something went wrong. Please try again.')
       }
     } catch (err) {
       console.log(err)
-      Alert.alert('', err.response.data.error)
       setIsLoading(false)
+      Alert.alert('', err.response.data.error)
     }
   } else {
+    setIsLoading(false)
     Alert.alert('', 'Invalid email or password')
   }
 }
@@ -133,6 +136,41 @@ const getRecommendations = async(userId, token, setIsLoading, setRecommendations
   }
 }
 
+const resetPassword = async(userId, resetCode, password, setIsLoading, router) => {
+  try {
+    setIsLoading(true)
+    const response = await axios.post(`${baseURL}auth/reset-password/${userId}`, {
+      password: password, resetCode: resetCode
+    })
+    if (response.status === 200) {
+      setIsLoading(false)
+      router.push('/login/Login')
+    }
+  } catch(err) {
+    setIsLoading(false)
+    Alert.alert('', err.response.data.error)
+  }
+}
+
+const forgotPassword = async (email, setIsLoading, router) => {
+  try {
+    setIsLoading(true)
+    const response = await axios.post(`${baseURL}auth/forgot-password`, {email: email})
+    if (response.status === 200) {
+      setIsLoading(false)
+      router.push({
+        pathname: '/resetPassword',
+        params: {userId: response.data.userId}
+      })
+    }
+  } catch(err) {
+    console.log(err)
+    Alert.alert('', err.response.data.error)
+  }
+}
+
 export { 
-  areCredentialsValid, isEmailValid, isPasswordSimilar, signUp, signIn, createRecommendation, activate, getRecommendations
+  areCredentialsValid, isEmailValid, isPasswordSimilar,
+  signUp, signIn, createRecommendation, activate,
+  getRecommendations, resetPassword, forgotPassword
 }

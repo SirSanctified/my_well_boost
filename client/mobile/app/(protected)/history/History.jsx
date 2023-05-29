@@ -1,20 +1,20 @@
 import { SafeAreaView, View, Text, Image, ActivityIndicator} from 'react-native'
 import { useRouter, Stack, useLocalSearchParams } from 'expo-router'
 import { historyStyles } from './history.styles'
-import { images, COLORS } from '../../constants'
-import InputText from '../../components/InputText/InputText'
-import { Button } from '../../components/Button/Button'
-import styles from '../../styles/index.styles'
+import { images, COLORS } from '../../../constants'
+import InputText from '../../../components/InputText/InputText'
+import { Button } from '../../../components/Button/Button'
+import styles from '../../../styles/index.styles'
 import { useState } from 'react'
-import { createRecommendation } from '../../utils'
+import { createRecommendation } from '../../../utils'
 
 
-const History = () => {
+const History = ({ user, token }) => {
   const router = useRouter()
   const [history, setHistory] = useState('')
   const [goals, setGoals] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { token, userId } = useLocalSearchParams()
+  const userId = user.id
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={ historyStyles.container}>

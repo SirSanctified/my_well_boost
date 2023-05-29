@@ -3,9 +3,9 @@ import {useEffect, useState } from "react"
 import axios from "axios"
 import {useRouter, useLocalSearchParams } from 'expo-router'
 import { dashboardStyles } from "./dashboard.styles"
-import { COLORS, images } from "../../constants"
-import styles from '../../styles/index.styles'
-import { getRecommendations } from "../../utils"
+import { COLORS, images } from "../../../constants"
+import styles from '../../../styles/index.styles'
+import { getRecommendations } from "../../../utils"
 
 
 const tdata = []
@@ -20,11 +20,11 @@ const ActivityItem = ({ item }) => {
     </View>
   )
 }
-const Dashboard = () => {
+const Dashboard = ({ user, token }) => {
   const router = useRouter()
   const [recommendations, setRecommendations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const { userId, token } = useLocalSearchParams()
+ const userId = user.id
   useEffect( () => {
     (async () =>
       await getRecommendations(userId, token, setIsLoading, setRecommendations))()
@@ -38,7 +38,7 @@ const Dashboard = () => {
             resizeMode="contain"
             style={ styles.profileImage }
           />
-          <Text style={ styles.profileText }>Anny Jay</Text>
+          <Text style={ styles.profileText }>Pritchard Mambambo</Text>
         </View>
         <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
         <View style={ dashboardStyles.listContainer }>

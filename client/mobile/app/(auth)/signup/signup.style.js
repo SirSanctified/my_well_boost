@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native"
-import { COLORS } from "../../constants"
+import { COLORS } from "../../../constants"
 
 const signUpStyles = StyleSheet.create({
   container: {

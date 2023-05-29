@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native'
 import { welcomeStyles } from './welcome.styles'
-import { images } from '../../constants'
-import { Button } from '../../components/Button/Button'
+import { images } from '../../../constants'
+import { Button } from '../../../components/Button/Button'
 
 const Welcome = ({ handlePress }) => {
   return (

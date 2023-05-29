@@ -1,11 +1,11 @@
 import { View, Text, SafeAreaView, Image, ScrollView, Alert } from 'react-native'
 import { Link, useRouter, Stack } from 'expo-router'
 import { useState } from 'react'
-import InputText from '../../components/InputText/InputText'
-import { Button } from '../../components/Button/Button'
+import InputText from '../../../components/InputText/InputText'
+import { Button } from '../../../components/Button/Button'
 import { signUpStyles } from './signup.style'
-import { images, COLORS } from '../../constants'
-import { areCredentialsValid } from '../../utils'
+import { images, COLORS } from '../../../constants'
+import { areCredentialsValid } from '../../../utils'
 
 const SignUp = () => {
   const router = useRouter()

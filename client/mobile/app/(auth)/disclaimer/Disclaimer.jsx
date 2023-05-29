@@ -2,8 +2,8 @@ import { View, Text, Image, Switch, SafeAreaView } from 'react-native'
 import { useRouter, Stack } from 'expo-router'
 import { useState } from 'react'
 import { disclaimerStyles } from './disclaimer.styles'
-import { Button } from '../../components/Button/Button'
-import { COLORS, images } from '../../constants'
+import { Button } from '../../../components/Button/Button'
+import { COLORS, images } from '../../../constants'
 
 const Disclaimer = () => {
   const [isDisabled, setIsDisabled] = useState(true)

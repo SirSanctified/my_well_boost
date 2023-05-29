@@ -44,6 +44,10 @@ User.init({
         type: DataTypes.STRING,
         allowNull: true
     },
+    resetToken: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
