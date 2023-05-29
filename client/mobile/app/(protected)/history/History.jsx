@@ -7,10 +7,12 @@ import { Button } from '../../../components/Button/Button'
 import styles from '../../../styles/index.styles'
 import { useState } from 'react'
 import { createRecommendation } from '../../../utils'
+import { useAuth } from '../../../context/auth'
 
 
-const History = ({ user, token }) => {
+const History = () => {
   const router = useRouter()
+  const { user } = useAuth()
   const [history, setHistory] = useState('')
   const [goals, setGoals] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -24,7 +26,7 @@ const History = ({ user, token }) => {
             source={ images.defaultProfile }
             resizeMode='contain'
           />
-          <Text style={ styles.profileText}>Anny Jay</Text>
+          <Text style={ styles.profileText}>{user.firstName} {user.lastName}</Text>
         </View>
         <View style={ historyStyles.historyContainer}>
           <Text style={ historyStyles.headerText }>Let's work on getting your lifestyle and health history and your goals.</Text>

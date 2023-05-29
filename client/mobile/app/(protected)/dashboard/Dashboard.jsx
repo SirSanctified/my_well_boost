@@ -6,6 +6,7 @@ import { dashboardStyles } from "./dashboard.styles"
 import { COLORS, images } from "../../../constants"
 import styles from '../../../styles/index.styles'
 import { getRecommendations } from "../../../utils"
+import { useAuth } from "../../../context/auth"
 
 
 const tdata = []
@@ -20,26 +21,30 @@ const ActivityItem = ({ item }) => {
     </View>
   )
 }
-const Dashboard = ({ user, token }) => {
+const Dashboard = () => {
   const router = useRouter()
   const [recommendations, setRecommendations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
- const userId = user.id
+  const { user } = useAuth()
+  const userId = user.id
+  const token = user.token
+
   useEffect( () => {
     (async () =>
       await getRecommendations(userId, token, setIsLoading, setRecommendations))()
   }, [])
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={dashboardStyles.container} contentContainerStyle={{ alignItems: 'center'}} showsVerticalScrollIndicator={ false }>
-        <View style={ styles.profileContainer }>
+      <View style={dashboardStyles.container}> 
+        {/* <View style={ styles.profileContainer }>
           <Image 
             source={ images.defaultProfile }
             resizeMode="contain"
             style={ styles.profileImage }
           />
           <Text style={ styles.profileText }>Pritchard Mambambo</Text>
-        </View>
+        </View> */}
         <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
         <View style={ dashboardStyles.listContainer }>
           <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
@@ -66,8 +71,7 @@ const Dashboard = ({ user, token }) => {
             keyExtractor={ item => item }
           />
         </View>
-        
-      </ScrollView>
+      </View>
     </SafeAreaView>
   )
 }

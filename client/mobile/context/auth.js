@@ -1,5 +1,6 @@
 import { useRouter, useSegments } from "expo-router";
 import React from "react";
+import * as SecureStore from 'expo-secure-store';
 
 const AuthContext = React.createContext(null);
 
@@ -15,7 +16,6 @@ function useProtectedRoute(user) {
 
   React.useEffect(() => {
     const inAuthGroup = segments[0] === "(auth)";
-
     if (
       // If the user is not signed in and the initial segment is not anything in the auth group.
       !user &&
@@ -33,14 +33,33 @@ function useProtectedRoute(user) {
 export function Provider(props) {
   const [user, setAuth] = React.useState(null);
 
+  React.useEffect(() => {
+    // Check if user data already exists in SecureStore.
+    SecureStore.getItemAsync("user").then((userData) => {
+      if (userData) {
+        // If user data exists, set the user state to the retrieved data.
+        setAuth(JSON.parse(userData));
+      }
+    });
+  }, []);
+
   useProtectedRoute(user);
-  const login = (token, user) => {
-    setAuth({token, user})
-  }
+
+  const login = async (token, user) => {
+    await SecureStore.setItemAsync("user", JSON.stringify({ token, ...user }));
+    setAuth({ token, ...user });
+  };
+
+  const logout = () => {
+    // Remove user data from SecureStore.
+    SecureStore.deleteItemAsync("user").then(() => {
+      // Set the user state to null.
+      setAuth(null);
+    });
+  };
+
   return (
-    <AuthContext.Provider
-      value={{user, login}}
-    >
+    <AuthContext.Provider value={{ user, login, logout }}>
       {props.children}
     </AuthContext.Provider>
   );

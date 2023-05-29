@@ -5,6 +5,7 @@ const dashboardStyles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.bgPrimary,
     flex: 1,
+    alignItems: 'center'
   },
   header: {
     fontSize: 24,
@@ -14,7 +15,7 @@ const dashboardStyles = StyleSheet.create({
   listContainer: {
     backgroundColor: COLORS.bgList,
     width: '95%',
-    height: 250,
+    height: 400,
     borderRadius: 10,
     paddingHorizontal: 10,
   },
