@@ -31,41 +31,78 @@ function useProtectedRoute(user) {
 }
 
 export function Provider(props) {
-  const [user, setAuth] = React.useState(null);
-
+  const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  
   React.useEffect(() => {
     // Check if user data already exists in SecureStore.
-    SecureStore.getItemAsync("user").then((userData) => {
-      if (userData) {
-        // If user data exists, set the user state to the retrieved data.
-        setAuth(JSON.parse(userData));
-      }
-    });
+    SecureStore.getItemAsync("user")
+      .then(userData => {
+        if (userData) {
+          const data = JSON.parse(userData);
+          const timestamp = data.timestamp;
+          const expiry = timestamp + (10 * 24 * 60 * 60 * 1000); // 10 days in ms
+          
+          if (Date.now() > expiry) {
+            // Delete expired data
+            SecureStore.deleteItemAsync("user");
+          } else {
+            // Data not expired yet, update state
+            setUser(data);
+          }
+        } 
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
   }, []);
-  
-  useProtectedRoute(user);
 
+  useProtectedRoute(user);  
 
   const login = async (token, user) => {
-    await SecureStore.setItemAsync("user", JSON.stringify({ token, ...user }));
-    setAuth({ token, ...user });
+    const data = {
+      token, 
+      ...user,
+      timestamp: Date.now()
+    };
+    
+    try {
+      await SecureStore.setItemAsync("user", JSON.stringify(data));
+      setUser(data);
+    } catch (err) {
+      console.log(err); 
+    }   
   };
-
+  
   const update = async (newUser) => {
-    setAuth(newUser, ...user)
-    await SecureStore.setItemAsync("user", JSON.stringify({ user }));
+    setLoading(true);
+    setUser(newUser);
+    try {
+      await SecureStore.setItemAsync("user", JSON.stringify({ user }));
+    } catch (err) {
+      console.log(err); 
+    }
+    setLoading(false);
   }
 
   const logout = () => {
+    setLoading(true);
     // Remove user data from SecureStore.
-    SecureStore.deleteItemAsync("user").then(() => {
-      // Set the user state to null.
-      setAuth(null);
-    });
+    SecureStore.deleteItemAsync("user")
+      .then(() => {
+        // Set the user state to null.
+        setUser(null);
+      })
+      .catch(err => {
+        console.log(err); 
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, update, logout }}>
+    <AuthContext.Provider value={{ user, login, update, logout, loading }}>
       {props.children}
     </AuthContext.Provider>
   );

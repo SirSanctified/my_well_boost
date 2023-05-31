@@ -11,7 +11,6 @@ const sequelize = new Sequelize(`postgres://${user}:${password}@localhost:5432/$
 
 
 const connectToDB = async () => {
-    console.log(`Authenticating with user ${user}:${password}/${data_base}`)
     try {
         await sequelize.authenticate()
         console.log("Connection to database has been established successfully.")
