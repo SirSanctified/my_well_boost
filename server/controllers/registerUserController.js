@@ -13,9 +13,6 @@ export const sendEmail = (user, {subject, message}) => {
   //create a nodemailer transport
   const transport = nodemailer.createTransport({
     service: "gmail",
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
@@ -64,7 +61,7 @@ export const registerUserController = async (req, res) => {
 
   try {
     // create table if it doesn't exist
-    await sequelize.sync({ force: true })
+    await sequelize.sync({ force: false })
     // check if user with given email already exists in the database
     const user = await User.findOne({ where: { email: email } })
     if (user) {
@@ -150,7 +147,15 @@ export const activateUserController = async (req, res) => {
       <p>MyWellboost Team</p>
       `
       sendEmail(user, { subject, message })
-      res.status(200).json({ "message": "User activated successfully", "user": user.toJSON() })
+      const userData = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        gender: user.gender,
+        dateOfBirth: user.dateOfBirth
+      }
+      res.status(200).json({ "message": "User activated successfully", "user": JSON.stringify(userData) })
     } else {
       res.status(400).json({"error": "Invalid token"})
     }

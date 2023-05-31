@@ -7,7 +7,7 @@ const data_base = process.env.DB_NAME
 const user = process.env.DB_USER
 const password = process.env.DB_PASSWORD
 
-const sequelize = new Sequelize(`postgres://${user}:${password}@localhost:5432/${data_base}`, {dialect: "postgres"})
+const sequelize = new Sequelize(`postgres://${user}:${password}@localhost:5432/${data_base}`, {dialect: "postgres", logging: false})
 
 
 const connectToDB = async () => {

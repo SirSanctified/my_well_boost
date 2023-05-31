@@ -34,12 +34,14 @@ const History = () => {
     ( isUserAvailable ? <SafeAreaView style={{ flex: 1 }}>
       <View style={ historyStyles.container}>
         <View style={ styles.profileContainer}>
-          <Image
-            style={ styles.profileImage}
-            source={ images.defaultProfile }
-            resizeMode='contain'
-          />
-          <Text style={ styles.profileText}>{user?.firstName} {user?.lastName}</Text>
+          <View>
+            <Image
+              style={ styles.profileImage}
+              source={ images.defaultProfile }
+              resizeMode='contain'
+            />
+            <Text style={ styles.profileText}>{user?.firstName} {user?.lastName}</Text>
+          </View>
         </View>
         <View style={ historyStyles.historyContainer}>
           <Text style={ historyStyles.headerText }>Let's work on getting your lifestyle and health history and your goals.</Text>

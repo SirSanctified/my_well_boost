@@ -40,7 +40,7 @@ export const createRecommendation = async(req, res) => {
     const { userId } = req.params
 
     try {
-      await Recommendation.sync({force: true})
+      await Recommendation.sync({force: false})
       const recommendation = await Recommendation.create({
         id: uuidv4(),
         medicalHistory: healthHistory,
@@ -58,9 +58,7 @@ export const createRecommendation = async(req, res) => {
       const recommendations = recommendedModifications.split("$")
       const cleanRecommendations = []
       recommendations.forEach((rec) => cleanRecommendations.push({recommendation: rec.trim(), id: uuidv4()}))
-      console.log(cleanRecommendations)
       res.status(201).json({ "recommendations": JSON.stringify(cleanRecommendations), "id": recommendation.id})
-      console.log(cleanRecommendations)
     } catch (error) {
         res.status(500).json({ "error": error.message})
         console.error(error)

@@ -1,18 +1,22 @@
 import axios from "axios"
 import { Alert } from "react-native"
-import { useAuth } from "../context/auth"
 
 
-const baseURL = 'http://192.168.1.128:4500/'
+const baseURL = 'http://192.168.191.40:4500/'
 
-const isPasswordSimilar = (password1, password2) => {
+export const isPasswordSimilar = (password1, password2) => {
   if (password1.length < 8 || password2.length < 8) {
     return false
   }
   return password1 === password2
 }
 
-const isEmailValid = (email) => {
+export const validateDob = (dob) => {
+  const dobRegex = /\d{4}-\d{2}-\d{2}/
+  return dobRegex.test(dob)
+}
+
+export const isEmailValid = (email) => {
   const emailRegex = /\S+@\S+\.\S+/
   return emailRegex.test(email)
 }
@@ -29,7 +33,7 @@ const areCredentialsValid = (email, password1, password2) => {
   return result
 }
 
-const signUp = async(firstName, lastName, email, password, dateOfBirth, gender, setIsLoading, router) => {
+export const signUp = async(firstName, lastName, email, password, dateOfBirth, gender, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.post(`${baseURL}auth/register`,
@@ -54,7 +58,7 @@ const signUp = async(firstName, lastName, email, password, dateOfBirth, gender, 
   }
 }
 
-const signIn = async(email, password, login, setIsLoading, router) => {
+export const signIn = async(email, password, login, setIsLoading, router) => {
   if (isEmailValid(email) && password.length >= 8) {
     try {
       setIsLoading(true)
@@ -82,7 +86,7 @@ const signIn = async(email, password, login, setIsLoading, router) => {
   }
 }
 
-const createRecommendation = async(healthHistory, healthGoals, userId, token, setIsLoading, router) => {
+export const createRecommendation = async(healthHistory, healthGoals, userId, token, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.post(`${baseURL}recommendations/new/${userId}`, {
@@ -102,7 +106,7 @@ const createRecommendation = async(healthHistory, healthGoals, userId, token, se
   }
 }
 
-const activate = async(token, setIsLoading, router) => {
+export const activate = async(token, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.post(`${baseURL}auth/activate`, {
@@ -121,7 +125,7 @@ const activate = async(token, setIsLoading, router) => {
   }
 }
 
-const getRecommendations = async(userId, token, setIsLoading, setRecommendations) => {
+export const getRecommendations = async(userId, token, setIsLoading, setRecommendations) => {
   try {
     setIsLoading(true)
     const response = await axios.get(`${baseURL}recommendations/${userId}`, { headers: {"Authorization" : `Bearer ${token}`}})
@@ -136,7 +140,7 @@ const getRecommendations = async(userId, token, setIsLoading, setRecommendations
   }
 }
 
-const resetPassword = async(userId, resetCode, password, setIsLoading, router) => {
+export const resetPassword = async(userId, resetCode, password, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.post(`${baseURL}auth/reset-password/${userId}`, {
@@ -152,7 +156,7 @@ const resetPassword = async(userId, resetCode, password, setIsLoading, router) =
   }
 }
 
-const forgotPassword = async (email, setIsLoading, router) => {
+export const forgotPassword = async (email, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.post(`${baseURL}auth/forgot-password`, {email: email})
@@ -169,7 +173,7 @@ const forgotPassword = async (email, setIsLoading, router) => {
   }
 }
 
-const logoutUser = async (id, token, logout, setIsLoading, router) => {
+export const logoutUser = async (id, token, logout, setIsLoading, router) => {
   try {
     setIsLoading(true)
     const response = await axios.get(`${baseURL}auth/logout/${id}`, { headers: {"Authorization" : `Bearer ${token}`}})
@@ -186,9 +190,49 @@ const logoutUser = async (id, token, logout, setIsLoading, router) => {
   }
 }
 
-export { 
-  areCredentialsValid, isEmailValid, isPasswordSimilar,
-  signUp, signIn, createRecommendation, activate,
-  getRecommendations, resetPassword, forgotPassword,
-  logoutUser
+export const getHistory = async (userId, token, setIsLoading, setHistory, setGoals) => {
+  try {
+    setIsLoading(true)
+    const response = await axios.get(`${baseURL}recommendations/history/${userId}`, { headers: {"Authorization" : `Bearer ${token}`}})
+    if (response.status === 200) {
+      setIsLoading(false)
+      setHistory(response.data.medicalHistory)
+      setGoals(response.data.healthGoals)
+    } else {
+      throw new Error('Something went wrong. Please try again')
+    }
+  } catch(err) {
+    setIsLoading(false)
+  }
+}
+
+export const updateProfile = async (userId, token, update, user, setIsloading) => {
+  try {
+    setIsloading(true)
+    const response = await axios.put(`${baseURL}users/${userId}`, {...user}, {headers: {"Authorization" : `Bearer ${token}`}})
+    if (response.status === 200) {
+      await update(user)
+    } else {
+      throw new Error('Something went wrong. Please try again')
+    }
+  } catch(err) {
+    setIsloading(false)
+    console.log(err)
+  }
+}
+
+export const deleteProfile = async (userId, token, logout, setIsloading, router) => {
+  try {
+    setIsloading(true)
+    await axios.delete(`${baseURL}users/${userId}`, {headers: {"Authorization" : `Bearer ${token}`}})
+    if (response.status === 200) {
+      setIsloading(false)
+    }
+  } catch(err) {
+    setIsloading(false)
+    console.log(err)
+  } finally {
+    await logout()
+    router.replace('/')
+  }
 }

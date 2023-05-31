@@ -6,7 +6,7 @@ import { COLORS, images } from '../../../constants'
 
 import { profileDataStyles } from './profileData.styles'
 import { useState } from 'react'
-import { signUp } from '../../../utils'
+import { signUp, validateDob } from '../../../utils'
 
 const ProfileData = () => {
   const router = useRouter()
@@ -16,11 +16,6 @@ const ProfileData = () => {
   const [dob, setDob] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { email, password } = useLocalSearchParams()
-
-  const validateDob = (dob) => {
-    const dobRegex = /\d{4}-\d{2}-\d{2}/
-    return dobRegex.test(dob)
-  }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>

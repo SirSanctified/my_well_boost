@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.bgProfile,
         borderRadius: 10,
         alignItems: 'center',
+        flexDirection: 'row',
         justifyContent: 'space-evenly',
     },
     profileImage: {

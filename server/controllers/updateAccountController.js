@@ -6,7 +6,7 @@ export const updateAccountController = async(req, res) => {
         let user = await User.findOne({ where: { id: userId } })
         if (user) {
             user = await User.update({...req.body}, { where: { id: userId}})
-            res.status(200).json(user.toJSON())
+            res.status(200).json(JSON.stringify(user))
         } else {
             res.status(404).json({ "error": `User with id ${ userId } not found` })
         }

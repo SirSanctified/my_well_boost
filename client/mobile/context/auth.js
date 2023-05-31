@@ -51,6 +51,11 @@ export function Provider(props) {
     setAuth({ token, ...user });
   };
 
+  const update = async (newUser) => {
+    setAuth(newUser, ...user)
+    await SecureStore.setItemAsync("user", JSON.stringify({ user }));
+  }
+
   const logout = () => {
     // Remove user data from SecureStore.
     SecureStore.deleteItemAsync("user").then(() => {
@@ -60,7 +65,7 @@ export function Provider(props) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, update, logout }}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -3,8 +3,7 @@ import {useEffect, useState } from "react"
 import axios from "axios"
 import {useRouter, useLocalSearchParams } from 'expo-router'
 import { dashboardStyles } from "./dashboard.styles"
-import { COLORS, images } from "../../../constants"
-import styles from '../../../styles/index.styles'
+import { COLORS } from "../../../constants"
 import { getRecommendations } from "../../../utils"
 import { useAuth } from "../../../context/auth"
 
@@ -43,15 +42,7 @@ const Dashboard = () => {
   
   return (
     ( isUserAvailable ? <SafeAreaView style={{ flex: 1 }}>
-      <View style={dashboardStyles.container}> 
-        {/* <View style={ styles.profileContainer }>
-          <Image 
-            source={ images.defaultProfile }
-            resizeMode="contain"
-            style={ styles.profileImage }
-          />
-          <Text style={ styles.profileText }>Pritchard Mambambo</Text>
-        </View> */}
+      <View style={dashboardStyles.container}>
         <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
         <View style={ dashboardStyles.listContainer }>
           <FlatList
