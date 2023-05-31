@@ -1,21 +1,19 @@
 import { SafeAreaView, ScrollView, View, FlatList, Text, Image, Pressable, TextInput, ActivityIndicator } from "react-native"
 import {useEffect, useState } from "react"
-import axios from "axios"
-import {useRouter, useLocalSearchParams } from 'expo-router'
+import {useRouter } from 'expo-router'
 import { dashboardStyles } from "./dashboard.styles"
 import { COLORS } from "../../../constants"
-import { getRecommendations } from "../../../utils"
+import { getActivities, getRecommendations } from "../../../utils"
 import { useAuth } from "../../../context/auth"
 
 
-const tdata = []
 
-const ActivityItem = ({ item }) => {
+const ActivityItem = ({ item }, setIsSelected, isSelected) => {
   return (
     <View style={ dashboardStyles.activity }>
-      <View style={ dashboardStyles.unselectedRadioButton }></View>
+      <View style={ isSelected ? dashboardStyles.selectedRadioButton : dashboardStyles.unselectedRadioButton }></View>
       <View style={ dashboardStyles.activityTextContainer}>
-        <Text style={{ width: '100%'}}>{ item }</Text>
+        <Text style={{ width: '100%', lineHeight: 20}} selectable onPress={() => setIsSelected(!isSelected)}>{ item.trim() }</Text>
       </View>
     </View>
   )
@@ -24,6 +22,9 @@ const Dashboard = () => {
   const router = useRouter()
   const [recommendations, setRecommendations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isActivitiesLoading, setIsActivitiesLoading] = useState(false)
+  const [activities, setActivities] = useState([])
+  const [isSelected, setIsSelected] = useState()
   const [isUserAvailable, setIsUserAvailable] = useState(false)
   const { user } = useAuth()
 
@@ -32,44 +33,40 @@ const Dashboard = () => {
       if (user) {
         setIsUserAvailable(true)
         await getRecommendations(userId, token, setIsLoading, setRecommendations)
+        await getActivities(userId, token, setActivities, setIsActivitiesLoading)
       } else {
         setIsUserAvailable(false)
       }
     })()
-  }, [])
+  }, [user])
   const userId = user ? user.id : null
   const token = user ? user.token : null
   
   return (
-    ( isUserAvailable ? <SafeAreaView style={{ flex: 1 }}>
-      <View style={dashboardStyles.container}>
-        <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
-        <View style={ dashboardStyles.listContainer }>
-          <FlatList
-            data={ recommendations }
-            renderItem={({item}) => ( <Text style={ dashboardStyles.recommendation }>{ item.trim() }</Text> )}
-            keyExtractor={ item => item }
-          />
+    ( isUserAvailable 
+      ? <ScrollView style={{ flex: 1, backgroundColor: COLORS.bgPrimary }} contentContainerStyle={{ alignItems: "center", justifyContent: "center"}}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={dashboardStyles.container}>
+          <Text style={ dashboardStyles.header }>Your recommended Lifestyle modifications</Text>
+          <View style={ dashboardStyles.listContainer }>
+            <FlatList
+              data={ recommendations }
+              renderItem={({item}) => ( <Text style={ dashboardStyles.recommendation }>{ item.trim() }</Text> )}
+              keyExtractor={ item => item }
+            />
+          </View>
+          <Text style={ dashboardStyles.header }>Today's Activities</Text>
+          <View style={{ marginTop: 20, marginBottom: 80 }}>
+            <FlatList 
+              data={ activities }
+              renderItem={({ item }) => ( ActivityItem({ item }, setIsSelected, isSelected) )}
+              keyExtractor={ item => item }
+            />
+          </View>
         </View>
-        <Text style={ dashboardStyles.header }>Today's Activities</Text>
-        <View style={ dashboardStyles.addActivityContainer }>
-          <TextInput 
-            style={ dashboardStyles.addActivityInput }
-            placeholder="Add another activity"
-          />
-          <Pressable style={ dashboardStyles.addActivityButton }>
-            <Text style={ dashboardStyles.btnText }>Add</Text>
-          </Pressable>
-        </View>
-        <View style={{ marginVertical: 20 }}>
-          <FlatList 
-            data={ tdata }
-            renderItem={({ item }) => ( ActivityItem({ item }) )}
-            keyExtractor={ item => item }
-          />
-        </View>
-      </View>
-    </SafeAreaView>: <View style={dashboardStyles.container}><Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text></View>)
+      </SafeAreaView>
+      </ScrollView>
+    :<View style={dashboardStyles.container}><ActivityIndicator size='large' color={ COLORS.btnColor } /></View>)
   )
 }
 

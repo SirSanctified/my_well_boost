@@ -27,7 +27,7 @@ const Account = () => {
     (async () => {
       await getHistory(user?.id, user?.token, setIsLoading, setHistory, setGoals)
     })()
-  }, [])
+  }, [user])
 
   return (
     <SafeAreaView style={{ flex: 1}}>
@@ -130,22 +130,14 @@ const Account = () => {
         </View>
         <ScrollView contentContainerStyle={{ alignItems: 'flex-start', justifyContent: 'flex-start'}}>
           <Text style={accountStyles.header}>Medical History and Goals</Text>
-          <View>
+          <View style={{marginHorizontal: 20}}>
             <View style={{ width:"100%", marginVertical: 5}}>
               <Text>Medical History:</Text>
-              <TextInput 
-                editable={ false }
-                value={ history }
-                style={ accountStyles.historyInput}
-              />
+              <Text style={ accountStyles.historyInput}>{history}</Text>
             </View>
             <View style={{ width:"100%", marginVertical: 5 }}>
               <Text>Health Goals:</Text>
-              <TextInput 
-                editable={ false }
-                value={ goals }
-                style={ accountStyles.historyInput }
-              />
+              <Text style={ accountStyles.historyInput }>{goals}</Text>
             </View>
           </View>
           <Text style={accountStyles.bottomText}>To update your history and goals, kindly visit the history screen.</Text>

@@ -1,5 +1,5 @@
 import { View, Text, Image, Switch, SafeAreaView } from 'react-native'
-import { useRouter, Stack } from 'expo-router'
+import { useRouter, Stack, useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { disclaimerStyles } from './disclaimer.styles'
 import { Button } from '../../../components/Button/Button'
@@ -12,6 +12,7 @@ const Disclaimer = () => {
     setIsAgreed(!isAgreed)
     setIsDisabled(!isDisabled)
   }
+  const {email, password} = useLocalSearchParams()
   const router = useRouter()
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -53,7 +54,11 @@ const Disclaimer = () => {
           : <View style={ disclaimerStyles.buttonEnabled }>
             <Button
               title={ 'Continue' }
-              handlePress={() => { router.push('/history/History')}}
+              handlePress={() => {
+                router.push({pathname:'/profileData/ProfileData',
+                  params: { email: email, password: password }}
+                )}
+              }
               isDisabled={ isDisabled }
             />
           </View>

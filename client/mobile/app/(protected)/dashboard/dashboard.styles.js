@@ -14,8 +14,9 @@ const dashboardStyles = StyleSheet.create({
   },
   listContainer: {
     backgroundColor: COLORS.bgList,
-    width: '95%',
-    height: 400,
+    width: '98%',
+    height: 'auto',
+    minHeight: 400,
     borderRadius: 10,
     paddingHorizontal: 10,
   },
@@ -60,32 +61,6 @@ const dashboardStyles = StyleSheet.create({
     width: '85%', 
     height: 'auto'
   },
-  addActivityContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: "row",
-    width: '95%'
-  },
-  addActivityInput: {
-    width: 321,
-    height: 40,
-    backgroundColor: '#d9d9d9',
-    borderRadius: 10,
-    padding: 10,
-    justifyContent: 'center'
-  },
-  addActivityButton: {
-    borderRadius: 10,
-    backgroundColor: '#d9d9d9',
-    width: 50,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  btnText: {
-    color: COLORS.btnColor,
-  }
 })
 
 export { dashboardStyles }

@@ -66,7 +66,7 @@ const SignUp = () => {
             title={ 'Register' }
             handlePress={async () => { 
               if (areCredentialsValid(email, password, confirmPass)) {
-                router.push({pathname:'/profileData/ProfileData',
+                router.push({pathname:'/disclaimer/Disclaimer',
                   params: { email: email, password: password }})
               } else {
                 setPassword('')

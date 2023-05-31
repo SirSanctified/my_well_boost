@@ -92,17 +92,11 @@ export const registerUserController = async (req, res) => {
     const subject = 'Activate your Account'
     const message = `
     <h1>Dear ${newUser.firstName},</h1>
-
-    <p>We are delighted to have you as a new member of our community. To start using our services, please activate your account by entering the code below in your application:</p>
-    
-    <p>Activation Token: ${activationToken}</p>
-    
-    <p>Please note that this token works only once. If you encounter any issues during the activation process, please do not hesitate to contact our support team at support@mywellboost.com.</p>
-    
-    <p>Thank you for choosing our platform. We look forward to providing you with the best experience possible.</p>
-    
-    <p>Best regards,</p>
-    
+    <p>We are delighted to have you as a new member of our community. To start using our services, please activate your account by entering the code below in your application:</p>    
+    <p>Activation Token: ${activationToken}</p>    
+    <p>Please note that this token works only once. If you encounter any issues during the activation process, please do not hesitate to contact our support team at support@mywellboost.com.</p>    
+    <p>Thank you for choosing our platform. We look forward to providing you with the best experience possible.</p>    
+    <p>Best regards,</p>    
     <p>MyWellBoost Team</p>
       `
     sendEmail(newUser, {subject, message})
@@ -135,15 +129,10 @@ export const activateUserController = async (req, res) => {
       const subject = 'Account Activation Successful'
       const message = `
       <h1>Dear ${ user.firstName }</h1>
-
       <p>We are delighted to inform you that your account has been successfully activated. You can now log in to our platform and start exploring all the features we have to offer.</p>
-
-      <p>To log in, please visit our website and enter your email address and password. If you have forgotten your password, you can reset it by clicking on the "Forgot Password" link on the login page.</p>
-
+      <p>To log in, open your application and enter your email address and password. If you have forgotten your password, you can reset it by clicking on the "Forgot Password" link on the login page.</p>
       <p>We would like to take this opportunity to thank you for choosing our platform. We are committed to providing you with the best possible experience and support. If you have any questions or concerns, please do not hesitate to contact us.</p>
-
       <p>Best regards,</p>
-
       <p>MyWellboost Team</p>
       `
       sendEmail(user, { subject, message })

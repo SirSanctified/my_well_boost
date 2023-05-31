@@ -3,6 +3,7 @@ import { getRecommentationController } from '../controllers/getRecommendationCon
 import { createRecommendation } from '../controllers/recommendationsController.js'
 import { updateRecommendationController } from '../controllers/updateRecommendationController.js'
 import { getHistoryController } from "../controllers/getHistoryController.js"
+import { dailyActivitiesController } from "../controllers/dailyActivitiesController.js"
 
 
 const recommendationRouter = express.Router()
@@ -12,6 +13,7 @@ recommendationRouter
   .post('/new/:userId', createRecommendation)
   .put('/update/:recommendationId', updateRecommendationController)
   .get('/history/:userId', getHistoryController)
+  .get('/activities/:userId', dailyActivitiesController)
 
 
 export default recommendationRouter

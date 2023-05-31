@@ -11,15 +11,15 @@ const configuration = new Configuration({
   apiKey: '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' //process.env.OPENAI_API_KEY,
 })
 
-const openai = new OpenAIApi(configuration)
+export const openai = new OpenAIApi(configuration)
 
 
 export const promptGPT = async(history, goals, age, gender) => {
   // must be called inside a try-catch block
-  const prompt = `I am a ${gender} aged ${age} and my health history:\n ${history}.
+  const prompt = `You are a professional health and wellness advicer and I need your help.
+  I am a ${gender} aged ${age} and this is my health history:\n ${history}.
   My health goals: ${goals}.
-  Give a list of lifestyle modifications I need to make to achieve my goals,
-  give a brief explanation of each recommendation and why you recommended it.
+  Give me a list of lifestyle modifications I need to make to achieve my goals. Give a brief explanation of each recommendation and why you recommended it.
   Put a dollar sign at the end of each explanation.`
 
   const response = await openai.createCompletion({
@@ -57,8 +57,10 @@ export const createRecommendation = async(req, res) => {
       await user.save()
       const recommendations = recommendedModifications.split("$")
       const cleanRecommendations = []
-      recommendations.forEach((rec) => cleanRecommendations.push({recommendation: rec.trim(), id: uuidv4()}))
-      res.status(201).json({ "recommendations": JSON.stringify(cleanRecommendations), "id": recommendation.id})
+      recommendations.forEach((rec) => {
+        if (rec.trim().length > 0) cleanRecommendations.push(rec.trim())
+      })
+      res.status(201).json(JSON.stringify(cleanRecommendations))
     } catch (error) {
         res.status(500).json({ "error": error.message})
         console.error(error)

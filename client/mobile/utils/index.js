@@ -21,7 +21,7 @@ export const isEmailValid = (email) => {
   return emailRegex.test(email)
 }
 
-const areCredentialsValid = (email, password1, password2) => {
+export const areCredentialsValid = (email, password1, password2) => {
   let result = true
   if (!isEmailValid(email)) {
     Alert.alert('Invalid Email', 'Please provide a valid email')
@@ -168,6 +168,7 @@ export const forgotPassword = async (email, setIsLoading, router) => {
       })
     }
   } catch(err) {
+    setIsLoading(false)
     console.log(err)
     Alert.alert('', err.response.data.error)
   }
@@ -234,5 +235,21 @@ export const deleteProfile = async (userId, token, logout, setIsloading, router)
   } finally {
     await logout()
     router.replace('/')
+  }
+}
+
+export const getActivities = async (userId, token, setActivities, setIsLoading) => {
+  try {
+    setIsLoading(true)
+    const response = await axios.get(`${baseURL}recommendations/activities/${userId}`, {headers: {"Authorization" : `Bearer ${token}`}})
+    if (response.status === 200) {
+      setIsLoading(false)
+      setActivities(JSON.parse(response.data))
+    } else {
+      throw new Error('Something went wrong, please try again')
+    }
+
+  } catch (error) {
+    console.log(error)    
   }
 }

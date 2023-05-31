@@ -54,18 +54,22 @@ export const accountStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 10,
     fontSize: 20,
+    marginHorizontal: 20
   },
   historyInput: {
     backgroundColor: COLORS.bgProfile,
     color: '#111',
-    width: 380,
-    height: 'auto',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
+    width: '100%',
+    minWidth: 300,
+    minHeight: 40,
+    textAlignVertical: 'center'
   },
   bottomText: {
     fontStyle: 'italic',
-    marginVertical: 10
+    marginVertical: 10,
+    marginHorizontal: 20
   }
 })
