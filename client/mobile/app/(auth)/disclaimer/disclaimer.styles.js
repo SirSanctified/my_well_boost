@@ -1,42 +1,42 @@
-import { StyleSheet } from "react-native"
-import { COLORS } from "../../../constants"
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../../../constants';
 
-
-export const disclaimerStyles = StyleSheet.create({
+const disclaimerStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.bgPrimary,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 100,
   },
   body: {
-    width: "95%",
+    width: '95%',
     borderColor: COLORS.btnColor,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: '#D9D9D9'
+    backgroundColor: '#D9D9D9',
   },
   headertext: {
     fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 10
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 10,
   },
   contentText: {
     fontSize: 14,
     paddingHorizontal: 10,
     marginBottom: 24,
-    lineHeight: 20
+    lineHeight: 20,
   },
   image: {
     width: 222,
     height: 182,
-    marginBottom: 10
+    marginBottom: 10,
   },
   switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   switchText: {
     fontSize: 14,
@@ -47,10 +47,12 @@ export const disclaimerStyles = StyleSheet.create({
   },
   buttonDisabled: {
     marginTop: 24,
-    opacity: 0.5
+    opacity: 0.5,
   },
   buttonEnabled: {
     marginTop: 24,
-    opacity: 1
-  }
-})
+    opacity: 1,
+  },
+});
+
+export default disclaimerStyles;

@@ -1,59 +1,59 @@
-import {User} from "../models/associations.js"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+/* eslint-disable no-console */
+/* eslint-disable consistent-return */
+/* eslint-disable import/extensions */
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { User } from '../models/associations.js';
 
-
-dotenv.config()
-
+dotenv.config();
 
 const createJWTs = (user) => {
   const accessToken = jwt.sign(
     { id: user.id, email: user.email },
     process.env.JWT_SECRET_ACCESS,
-    { expiresIn: "10d", },
-  )
+    { expiresIn: '10d' },
+  );
   const refreshToken = jwt.sign(
     { id: user.id, email: user.email },
     process.env.JWT_SECRET_REFRESH,
-    { expiresIn: "30d", }
-  )
+    { expiresIn: '30d' },
+  );
   return {
-    accessToken: accessToken,
-    refreshToken: refreshToken
-  }
-}
+    accessToken,
+    refreshToken,
+  };
+};
 
-
-export const loginUserController = async (req, res) => {
-  const {email, password} = req.body
+const loginUserController = async (req, res) => {
+  const { email, password } = req.body;
   // check if email and password are provided
   if (!email || !password) {
-    return res.status(400).json({"error": "Please provide email and password"})
+    return res.status(400).json({ error: 'Please provide email and password' });
   }
   // check if user with given email exists in the database
   try {
-    const user = await User.findOne({where: {email: email}})
-    if (!user) return res.status(401).json({"error": "Incorrect email or password"})
+    const user = await User.findOne({ where: { email } });
+    if (!user) return res.status(401).json({ error: 'Incorrect email or password' });
     // check if user has verified email address
-    if (!user.active) return res.status(400).json({"error": "Please verify your email address first"})
+    if (!user.active) return res.status(400).json({ error: 'Please verify your email address first' });
     // check if password is correct
-    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(401).json({"error": "Incorrect email or password"})
+      return res.status(401).json({ error: 'Incorrect email or password' });
     }
     // create access token and refresh token
-    const { accessToken, refreshToken } = createJWTs(user)
-    
+    const { accessToken, refreshToken } = createJWTs(user);
+
     // save refresh token in the database
-    user.refreshToken = refreshToken
-    await user.save()
+    user.refreshToken = refreshToken;
+    await user.save();
 
     // send refresh token as httponly cookie
-    res.cookie("refreshToken", refreshToken, {
+    res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    })
+    });
     // send response
     const userData = {
       id: user.id,
@@ -62,10 +62,12 @@ export const loginUserController = async (req, res) => {
       email: user.email,
       dateOfBirth: user.dateOfBirth,
       gender: user.gender,
-    }
-    res.status(200).json({ "token": accessToken, "user": userData })
+    };
+    res.status(200).json({ token: accessToken, user: userData });
   } catch (error) {
-    res.status(500).json({ "error": error.message, })
-    console.error(error.message)
+    res.status(500).json({ error: error.message });
+    console.error(error.message);
   }
-}
+};
+
+export default loginUserController;

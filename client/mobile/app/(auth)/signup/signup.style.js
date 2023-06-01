@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native"
-import { COLORS } from "../../../constants"
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../../../constants';
 
 const signUpStyles = StyleSheet.create({
   container: {
@@ -8,6 +8,7 @@ const signUpStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 24,
+    paddingTop: 100,
   },
   image: {
     marginTop: 10,
@@ -25,12 +26,12 @@ const signUpStyles = StyleSheet.create({
   },
   bottomText: {
     marginTop: 10,
-    marginBottom: 30
+    marginBottom: 30,
   },
   linkText: {
     color: COLORS.btnColor,
     fontWeight: '900',
-  }
-})
+  },
+});
 
-export { signUpStyles }
+export default signUpStyles;

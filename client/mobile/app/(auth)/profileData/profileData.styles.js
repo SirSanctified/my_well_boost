@@ -1,12 +1,13 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 
-import { COLORS } from '../../../constants'
+import { COLORS } from '../../../constants';
 
-export const profileDataStyles = StyleSheet.create({
+const profileDataStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.bgPrimary,
     alignItems: 'center',
+    paddingTop: 100,
   },
   image: {
     width: 300,
@@ -26,5 +27,7 @@ export const profileDataStyles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     marginBottom: 16,
-  }
-})
+  },
+});
+
+export default profileDataStyles;

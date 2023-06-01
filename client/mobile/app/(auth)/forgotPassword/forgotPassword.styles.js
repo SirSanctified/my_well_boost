@@ -1,17 +1,18 @@
-import { StyleSheet } from 'react-native'
-import { COLORS } from '../../../constants'
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../../../constants';
 
 const forgotPasswordStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     padding: 12,
-    backgroundColor: COLORS.bgPrimary
+    backgroundColor: COLORS.bgPrimary,
+    paddingTop: 100,
   },
   image: {
     width: 320,
-    height:273,
-    marginTop: 12
+    height: 273,
+    marginTop: 12,
   },
   headerText: {
     fontSize: 24,
@@ -26,8 +27,8 @@ const forgotPasswordStyles = StyleSheet.create({
     lineHeight: 20,
   },
   inputContainer: {
-    marginVertical: 12
-  }
-})
+    marginVertical: 16,
+  },
+});
 
-export { forgotPasswordStyles }
+export default forgotPasswordStyles;

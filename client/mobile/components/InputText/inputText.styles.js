@@ -1,17 +1,25 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet } from 'react-native';
 
 const inputTextStyles = StyleSheet.create({
   input: {
     height: 40,
-    width: 370,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.4)',
+    width: 320,
     paddingHorizontal: 16,
-    borderRadius: 10,
     fontSize: 14,
+  },
+  inputContainer: {
+    flexDirection: 'row',
     backgroundColor: '#D9D9D9',
-  }
-})
+    borderBottomWidth: 1,
+    borderRadius: 4,
+    marginTop: 12,
+    paddingHorizontal: 16,
+    marginHorizontal: 8,
+    minWidth: 380,
+    height: 50,
+    alignItems: 'center',
+    borderColor: 'rgba(0, 0, 0, 0.4)',
+  },
+});
 
-export { inputTextStyles }
+export default inputTextStyles;

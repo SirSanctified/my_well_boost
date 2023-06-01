@@ -1,16 +1,17 @@
-import { StyleSheet } from "react-native"
-import { COLORS } from "../../../constants"
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../constants';
 
 const dashboardStyles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.bgPrimary,
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 100,
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginVertical: 20
+    marginVertical: 20,
   },
   listContainer: {
     backgroundColor: COLORS.bgList,
@@ -34,7 +35,7 @@ const dashboardStyles = StyleSheet.create({
     marginVertical: 5,
     paddingVertical: 10,
     shadowColor: 'black',
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   unselectedRadioButton: {
     width: 15,
@@ -44,7 +45,7 @@ const dashboardStyles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 10,
     shadowColor: 'black',
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   selectedRadioButton: {
     width: 15,
@@ -54,13 +55,13 @@ const dashboardStyles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 10,
     shadowColor: 'black',
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
-  activityTextContainer: { 
-    flexWrap: 'wrap', 
-    width: '85%', 
-    height: 'auto'
+  activityTextContainer: {
+    flexWrap: 'wrap',
+    width: '85%',
+    height: 'auto',
   },
-})
+});
 
-export { dashboardStyles }
+export default dashboardStyles;

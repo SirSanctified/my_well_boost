@@ -1,12 +1,13 @@
-import { StyleSheet } from 'react-native'
-import { COLORS } from '../../../constants'
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../../../constants';
 
 const loginStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 100,
     alignItems: 'center',
-    backgroundColor: COLORS.bgPrimary
+    backgroundColor: COLORS.bgPrimary,
   },
   image: {
     width: 388,
@@ -19,13 +20,13 @@ const loginStyles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   inputContainer: {
-    marginTop: 20
+    marginTop: 20,
   },
   buttonContainer: {
-    marginTop: 20
+    marginTop: 20,
   },
   forgotPasswordContainer: {
     marginVertical: 24,
@@ -44,11 +45,11 @@ const loginStyles = StyleSheet.create({
     color: COLORS.btnColor,
   },
   bottomTextContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
   bottomText: {
-    fontSize: 14
-  }
-})
+    fontSize: 14,
+  },
+});
 
-export { loginStyles }
+export default loginStyles;

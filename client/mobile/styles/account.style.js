@@ -1,17 +1,15 @@
-import { StyleSheet } from "react-native"
-import { COLORS } from '../../../constants'
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../constants';
 
-export const accountStyles = StyleSheet.create({
+const accountStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: COLORS.bgPrimary
+    backgroundColor: COLORS.bgPrimary,
+    paddingTop: 100,
   },
   inputContainer: {
     width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -25,14 +23,15 @@ export const accountStyles = StyleSheet.create({
     backgroundColor: COLORS.bgProfile,
     borderRadius: 5,
     width: '100%',
-    height: 45
+    height: 45,
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignItems: "center",
+    alignItems: 'center',
     width: '100%',
+    marginTop: 20,
     paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   updateButton: {
     width: 150,
@@ -45,16 +44,17 @@ export const accountStyles = StyleSheet.create({
   deleteButton: {
     width: 150,
     height: 40,
-    backgroundColor: '#ff0000',
+    backgroundColor: '#f5055f',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   header: {
     fontWeight: 'bold',
-    marginVertical: 10,
+    marginTop: 30,
+    marginBottom: 10,
     fontSize: 20,
-    marginHorizontal: 20
+    paddingHorizontal: 10,
   },
   historyInput: {
     backgroundColor: COLORS.bgProfile,
@@ -65,11 +65,13 @@ export const accountStyles = StyleSheet.create({
     width: '100%',
     minWidth: 300,
     minHeight: 40,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
   bottomText: {
     fontStyle: 'italic',
     marginVertical: 10,
-    marginHorizontal: 20
-  }
-})
+    paddingHorizontal: 10,
+  },
+});
+
+export default accountStyles;

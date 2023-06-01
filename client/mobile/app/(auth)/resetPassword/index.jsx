@@ -1,66 +1,70 @@
-import { SafeAreaView, View, Text, ActivityIndicator, Alert } from "react-native"
-import { Button } from "../../../components/Button/Button"
-import InputText from "../../../components/InputText/InputText"
-import { isPasswordSimilar, resetPassword } from '../../../utils'
+/* eslint-disable react/react-in-jsx-scope */
+import {
+  SafeAreaView, View, Text, ActivityIndicator, Alert,
+} from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
+import Button from '../../../components/Button/Button';
+// eslint-disable-next-line import/named
+import { CodeInput, PasswordInput } from '../../../components/InputText/InputText';
+import { isPasswordSimilar, resetPassword } from '../../../utils';
 
-import { COLORS } from "../../../constants"
-import { useRouter, useLocalSearchParams } from "expo-router"
-import { useState } from "react"
-import { activationStyles } from "../activation/activation.styles"
+import { COLORS } from '../../../constants';
+import activationStyles from '../activation/activation.styles';
 
-const ResetPassword = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [password, setPassword] = useState('')
-  const [password2, setPassword2] = useState('')
-  const [resetCode, setResetCode] = useState('')
-  const { userId } = useLocalSearchParams()
-  const router = useRouter()
+function ResetPassword() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const { userId } = useLocalSearchParams();
+  const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={ activationStyles.container}>
+      <View style={activationStyles.container}>
         <Text>
-          Enter the 8-digit reset code you received with your email along with your new password. Note that the reset code is case sensitive.
+          Enter the 8-digit reset code you received with your email along with your new password. \
+          Note that the reset code is case sensitive.
         </Text>
         <View>
-        <InputText 
-            placeholder={'Enter your password reset code'}
+          <CodeInput
+            placeholder="Enter your password reset code"
             textValue={resetCode}
-            handleOnChange={(text) => { setResetCode(text) }}
-            autoFocus={true}
-            password={false}
+            handleOnChange={(text) => { setResetCode(text); }}
+            autoFocus
           />
-        <InputText 
-            placeholder={'Enter your new password'}
+          <PasswordInput
+            placeholder="Enter your new password"
             textValue={password}
-            handleOnChange={(text) => { setPassword(text) }}
+            handleOnChange={(text) => { setPassword(text); }}
             autoFocus={false}
-            password={true}
+            password
           />
-          <InputText 
-            placeholder={'Confirm your new password'}
+          <PasswordInput
+            placeholder="Confirm your new password"
             textValue={password2}
-            handleOnChange={(text) => { setPassword2(text) }}
+            handleOnChange={(text) => { setPassword2(text); }}
             autoFocus={false}
-            password={true}
+            password
           />
         </View>
         <View>
-          <Button 
-            title={'Reset Password'}
+          <Button
+            title="Reset Password"
             isDisabled={false}
-            handlePress={async() => {
-              if(isPasswordSimilar(password, password2)) {
-                await resetPassword(userId, resetCode, password, setIsLoading, router)
+            handlePress={async () => {
+              if (isPasswordSimilar(password, password2)) {
+                await resetPassword(userId, resetCode, password, setIsLoading, router);
               } else {
-                Alert.alert('', 'Passwords must be similar')
+                Alert.alert('', 'Passwords must be similar');
               }
             }}
           />
-          <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size='large' color={ COLORS.btnColor } /> : null }</Text>
+          <Text style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>{ isLoading ? <ActivityIndicator size="large" color={COLORS.btnColor} /> : null }</Text>
         </View>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
-export default ResetPassword
+export default ResetPassword;
