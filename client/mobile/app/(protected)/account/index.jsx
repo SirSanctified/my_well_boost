@@ -103,6 +103,7 @@ function Account() {
           </View>
           <View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
             <Text style={accountStyles.header}>Medical History and Goals</Text>
+            { isLoading ? <ActivityIndicator size="large" color={COLORS.btnColor} /> : null }
             <View>
               <HistoryInput
                 handleOnChange={() => {}}
