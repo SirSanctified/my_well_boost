@@ -35,14 +35,14 @@ function Disclaimer() {
         <View style={disclaimerStyles.body}>
           <Text style={disclaimerStyles.headertext}>Disclaimer</Text>
           <Text style={disclaimerStyles.contentText}>
-            This application is intended to provide general guidance on health and wellness \
-            planning and is not intended to be a substitute for professional medical advice. \
-            By using this application, you acknowledge that the information provided is intended \
-            for informational and educational purposes only. The health and wellness plans \
-            provided in this application should not be considered medical advice or a substitute \
-            for professional medical advice, diagnosis, or treatment. We cannot and do not \
-            guarantee that any plans provided by this application will be suitable for your \
-            particular health needs. We will not be held responsible for any decisions or actions \
+            This application is intended to provide general guidance on health and wellness
+            planning and is not intended to be a substitute for professional medical advice.
+            By using this application, you acknowledge that the information provided is intended
+            for informational and educational purposes only. The health and wellness plans
+            provided in this application should not be considered medical advice or a substitute
+            for professional medical advice, diagnosis, or treatment. We cannot and do not
+            guarantee that any plans provided by this application will be suitable for your
+            particular health needs. We will not be held responsible for any decisions or actions
             taken based on ths information provided in this application.
           </Text>
 

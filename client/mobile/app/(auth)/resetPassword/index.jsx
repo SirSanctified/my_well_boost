@@ -48,7 +48,7 @@ function ResetPassword() {
             password
           />
         </View>
-        <View>
+        <View style={{ marginTop: 30 }}>
           <Button
             title="Reset Password"
             isDisabled={false}

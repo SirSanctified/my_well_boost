@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/react-in-jsx-scope */
 import { Tabs, useRouter } from 'expo-router';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -24,10 +24,17 @@ export default function AppLayout() {
           tabBarHideOnKeyboard: true,
           tabBarLabelStyle: { fontSize: 14 },
           headerShown: true,
+          headerTitle: '',
           headerStyle: { backgroundColor: COLORS.bgPrimary },
           headerTransparent: true,
           headerLeft: () => (
-            isLoading ? <ActivityIndicator size="small" color={COLORS.btnColor} /> : null
+            isLoading
+              ? (
+                <Text style={{ minWidth: 100, textAlign: 'center' }}>
+                  <ActivityIndicator size="large" color={COLORS.btnColor} style={{ alignSelf: 'flex-end' }} />
+                </Text>
+              )
+              : null
           ),
           headerRight: () => (
             <AntDesign
