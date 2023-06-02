@@ -11,7 +11,7 @@ DailyActivities.init({
     allowNull: false,
   },
   activities: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(500),
     allowNull: true,
   },
 }, { sequelize });

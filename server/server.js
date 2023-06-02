@@ -12,7 +12,7 @@ import { connectToDB } from './config/db.js';
 import verifyJWT from './middleware/verifyJWT.js';
 
 const app = express();
-const port = process.env.PORT || 4500;
+const port = process.env.PORT || 5000;
 connectToDB();
 dotenv.config();
 app.use(cors());

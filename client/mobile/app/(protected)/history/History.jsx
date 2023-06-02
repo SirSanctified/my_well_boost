@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  SafeAreaView, View, Text, Image, ActivityIndicator, Alert,
+  SafeAreaView, View, Text, Image, ActivityIndicator, Alert, Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState, useEffect } from 'react';
@@ -10,28 +10,30 @@ import { images, COLORS } from '../../../constants';
 import { GoalsInput, HistoryInput } from '../../../components/InputText/InputText';
 import Button from '../../../components/Button/Button';
 import styles from '../../../styles/index.styles';
-import { createRecommendation } from '../../../utils';
+import { createRecommendation, showToast } from '../../../utils';
 import { useAuth } from '../../../context/auth';
 
 function History() {
   const router = useRouter();
-  const { user } = useAuth();
   const [history, setHistory] = useState('');
   const [goals, setGoals] = useState('');
+  const { user } = useAuth();
+  const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isUserAvailable, setIsUserAvailable] = useState(false);
   useEffect(() => {
     (async () => {
-      if (user) {
+      if (user) setUserData(user);
+      if (userData) {
         setIsUserAvailable(true);
       } else {
         setIsUserAvailable(false);
       }
     })();
-  }, []);
+  }, [user]);
 
-  const userId = user?.id;
-  const token = user?.token;
+  const userId = userData?.id;
+  const token = userData?.token;
 
   return (
     (isUserAvailable ? (
@@ -45,9 +47,9 @@ function History() {
                 resizeMode="contain"
               />
               <Text style={styles.profileText}>
-                {user?.firstName}
+                {userData?.firstName}
                 {' '}
-                {user?.lastName}
+                {userData?.lastName}
               </Text>
             </View>
           </View>
@@ -75,6 +77,8 @@ function History() {
               handlePress={async () => {
                 if (history !== '' && goals !== '') {
                   await createRecommendation(history, goals, userId, token, setIsLoading, router);
+                } else if (Platform.OS === 'android') {
+                  showToast('Please fill in all fields so we can help you better');
                 } else {
                   Alert.alert('', 'Please fill in all fields so we can help you better');
                 }

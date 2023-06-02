@@ -1,13 +1,13 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  SafeAreaView, View, Text, ActivityIndicator, Alert,
+  SafeAreaView, View, Text, ActivityIndicator, Alert, Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import Button from '../../../components/Button/Button';
 // eslint-disable-next-line import/named
 import { CodeInput, PasswordInput } from '../../../components/InputText/InputText';
-import { isPasswordSimilar, resetPassword } from '../../../utils';
+import { isPasswordSimilar, resetPassword, showToast } from '../../../utils';
 
 import { COLORS } from '../../../constants';
 import activationStyles from '../activation/activation.styles';
@@ -55,6 +55,8 @@ function ResetPassword() {
             handlePress={async () => {
               if (isPasswordSimilar(password, password2)) {
                 await resetPassword(userId, resetCode, password, setIsLoading, router);
+              } else if (Platform.OS === 'android') {
+                showToast('Passwords must be similar');
               } else {
                 Alert.alert('', 'Passwords must be similar');
               }

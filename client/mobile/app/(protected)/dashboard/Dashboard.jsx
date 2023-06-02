@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/prop-types */
 import {
@@ -47,6 +49,7 @@ function Dashboard() {
           await getActivities(userId, token, setActivities, setIsActivitiesLoading);
         } catch (err) {
           setError(true);
+          console.log(err);
         }
       } else {
         setIsUserAvailable(false);
@@ -82,16 +85,22 @@ function Dashboard() {
                   )
                   : (
                     <>
-                      <Text style={{ color: '#ff00ff' }}>{activities[0]}</Text>
-                      <FontAwesome
-                        name="refresh"
-                        size={36}
-                        color={COLORS.btnColor}
-                        onPress={async () => {
-                          await getActivities(userId, token, setActivities, setIsLoading);
-                        }}
-                        style={{ marginTop: 20, alignSelf: 'center' }}
-                      />
+                      { isLoading
+                        ? <ActivityIndicator size="large" color={COLORS.btnColor} />
+                        : (
+                          <>
+                            <Text style={{ color: '#ff00ff' }}>{activities[0]}</Text>
+                            <FontAwesome
+                              name="refresh"
+                              size={36}
+                              color={COLORS.btnColor}
+                              onPress={async () => {
+                                await getActivities(userId, token, setActivities, setIsLoading);
+                              }}
+                              style={{ marginTop: 20, alignSelf: 'center' }}
+                            />
+                          </>
+                        )}
                     </>
                   )}
 

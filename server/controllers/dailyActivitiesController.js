@@ -14,7 +14,7 @@ const dailyActivitiesController = async (req, res) => {
     // check if user with given id already has recommendations and they have not expired
     const dailyActivities = await DailyActivities.findOne({ where: { UserId: userId } });
     const today = new Date().getDate();
-    if (dailyActivities && today === dailyActivities?.createdAt.getDate()) {
+    if (dailyActivities && today === dailyActivities?.updatedAt.getDate()) {
       const activities = [];
       const uncleanActivities = dailyActivities.activities.split('$');
       uncleanActivities.forEach((activity) => {
@@ -39,7 +39,7 @@ const dailyActivitiesController = async (req, res) => {
       frequency_penalty: 0.5,
       presence_penalty: 0,
     });
-
+    if (dailyActivities) await DailyActivities.destroy({ where: { UserId: userId } });
     await DailyActivities.create({
       id: uuidv4(),
       activities: response.data.choices[0].text,

@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import { Alert } from 'react-native';
+import { Alert, Platform, ToastAndroid } from 'react-native';
 
-const baseURL = 'http://192.168.191.40:4500/';
+const baseURL = 'http://192.168.191.40:5000/';
 
 export const isPasswordSimilar = (password1, password2) => {
   if (password1.length < 8 || password2.length < 8) {
@@ -16,6 +16,11 @@ export const validateDob = (dob) => {
   return dobRegex.test(dob);
 };
 
+// show toast message on android
+export const showToast = (message) => {
+  ToastAndroid.show(message, ToastAndroid.SHORT);
+};
+
 export const isEmailValid = (email) => {
   const emailRegex = /\S+@\S+\.\S+/;
   return emailRegex.test(email);
@@ -24,10 +29,18 @@ export const isEmailValid = (email) => {
 export const areCredentialsValid = (email, password1, password2) => {
   let result = true;
   if (!isEmailValid(email)) {
-    Alert.alert('Invalid Email', 'Please provide a valid email');
+    if (Platform.OS === 'android') {
+      showToast('Invalid email address');
+    } else {
+      Alert.alert('', 'Invalid email address');
+    }
     result = false;
   } else if (!isPasswordSimilar(password1, password2)) {
-    Alert.alert('Passwords do not match', 'Please make sure your passwords match');
+    if (Platform.OS === 'android') {
+      showToast('Passwords do not match');
+    } else {
+      Alert.alert('', 'Passwords do not match');
+    }
     result = false;
   }
   return result;
@@ -63,9 +76,13 @@ export const signUp = async (
       throw new Error('Something went wrong. Please try again.');
     }
   } catch (err) {
-    console.log(err);
-    Alert.alert('Error', err.response.data);
     setIsLoading(false);
+    console.log(err);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data);
+    } else {
+      Alert.alert('', err.response.data);
+    }
   }
 };
 
@@ -84,6 +101,7 @@ export const signIn = async (email, password, login, setIsLoading, router) => {
         setIsLoading(false);
         const { token, user } = response.data;
         login(token, user);
+        if (Platform.OS === 'android') showToast('Login successful');
         router.push('/history/History');
       } else {
         throw new Error('Something went wrong. Please try again.');
@@ -91,11 +109,19 @@ export const signIn = async (email, password, login, setIsLoading, router) => {
     } catch (err) {
       console.log(err);
       setIsLoading(false);
-      Alert.alert('', err.response.data.error);
+      if (Platform.OS === 'android') {
+        showToast(err.response.data.error);
+      } else {
+        Alert.alert('', err.response.data.error);
+      }
     }
   } else {
     setIsLoading(false);
-    Alert.alert('', 'Invalid email or password');
+    if (Platform.OS === 'android') {
+      showToast('Invalid email or password');
+    } else {
+      Alert.alert('', 'Invalid email or password');
+    }
   }
 };
 
@@ -115,13 +141,18 @@ export const createRecommendation = async (
     }, { headers: { Authorization: `Bearer ${token}` } });
     if (response.status === 201) {
       setIsLoading(false);
+      if (Platform.OS === 'android') showToast('Recommendations created');
       router.push({ pathname: '/dashboard/Dashboard', params: { userId, token } });
     } else {
       throw new Error('Something went wrong. Please try again.');
     }
   } catch (err) {
-    Alert.alert('', err.response.data.error);
     setIsLoading(false);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    } else {
+      Alert.alert('', err.response.data.error);
+    }
     // console.log(err)
   }
 };
@@ -134,14 +165,19 @@ export const activate = async (token, setIsLoading, router) => {
     });
     if (response.status === 200) {
       setIsLoading(false);
+      if (Platform.OS === 'android') showToast('Account activated');
       router.push('/login/Login');
     } else {
       throw new Error('Something went wrong. Please try again.');
     }
   } catch (err) {
-    Alert.alert('Error', err.response.data.error);
-    console.log(err.response.data.error);
     setIsLoading(false);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    } else {
+      Alert.alert('Error', err.response.data.error);
+    }
+    console.log(err.response.data.error);
   }
 };
 
@@ -156,7 +192,12 @@ export const getRecommendations = async (userId, token, setIsLoading, setRecomme
       throw new Error('Something went wrong. Please try again');
     }
   } catch (error) {
-    Alert.alert('Error', error.response.data.error);
+    setIsLoading(false);
+    if (Platform.OS === 'android') {
+      showToast(error.response.data.error);
+    } else {
+      Alert.alert('Error', error.response.data.error);
+    }
   }
 };
 
@@ -168,11 +209,16 @@ export const resetPassword = async (userId, resetCode, password, setIsLoading, r
     });
     if (response.status === 200) {
       setIsLoading(false);
+      if (Platform.OS === 'android') showToast('Password reset successful');
       router.push('/login/Login');
     }
   } catch (err) {
     setIsLoading(false);
-    Alert.alert('', err.response.data.error);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    } else {
+      Alert.alert('', err.response.data.error);
+    }
   }
 };
 
@@ -182,6 +228,7 @@ export const forgotPassword = async (email, setIsLoading, router) => {
     const response = await axios.post(`${baseURL}auth/forgot-password`, { email });
     if (response.status === 200) {
       setIsLoading(false);
+      if (Platform.OS === 'android') showToast('Reset code sent');
       router.push({
         pathname: '/resetPassword',
         params: { userId: response.data.userId },
@@ -190,7 +237,11 @@ export const forgotPassword = async (email, setIsLoading, router) => {
   } catch (err) {
     setIsLoading(false);
     console.log(err);
-    Alert.alert('', err.response.data.error);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    } else {
+      Alert.alert('', err.response.data.error);
+    }
   }
 };
 
@@ -206,6 +257,7 @@ export const logoutUser = async (id, token, logout, setIsLoading, router) => {
   } catch (err) {
     setIsLoading(false);
   } finally {
+    if (Platform.OS === 'android') showToast('Logout successful');
     await logout();
     router.replace('/');
   }
@@ -224,6 +276,9 @@ export const getHistory = async (userId, token, setIsLoading, setHistory, setGoa
     }
   } catch (err) {
     setIsLoading(false);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    }
   }
 };
 
@@ -234,11 +289,13 @@ export const updateProfile = async (userId, token, update, user, setIsloading) =
     if (response.status === 200) {
       setIsloading(false);
       await update(user);
+      if (Platform.OS === 'android') showToast('Profile updated');
     } else {
       throw new Error('Something went wrong. Please try again');
     }
   } catch (err) {
     setIsloading(false);
+    if (Platform.OS === 'android') showToast(err.response.data.error);
     console.log(err);
   }
 };
@@ -249,13 +306,18 @@ export const deleteProfile = async (userId, token, logout, setIsloading, router)
     const response = await axios.delete(`${baseURL}users/${userId}`, { headers: { Authorization: `Bearer ${token}` } });
     if (response.status === 200) {
       setIsloading(false);
+      await logout();
+      if (Platform.OS === 'android') showToast('Profile deleted');
+      router.replace('/');
     }
   } catch (err) {
     setIsloading(false);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    } else {
+      Alert.alert('', err.response.data.error);
+    }
     console.log(err);
-  } finally {
-    await logout();
-    router.replace('/');
   }
 };
 
@@ -271,6 +333,7 @@ export const getActivities = async (userId, token, setActivities, setIsLoading) 
     }
   } catch (error) {
     setActivities([error.response.data.error]);
+    setIsLoading(false);
     console.log(error);
     throw new Error('Something went wrong, please try again');
   }
