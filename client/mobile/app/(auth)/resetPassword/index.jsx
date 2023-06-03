@@ -1,13 +1,14 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  SafeAreaView, View, Text, ActivityIndicator, Alert, Platform,
+  SafeAreaView, View, Text, ActivityIndicator, Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import Button from '../../../components/Button/Button';
-// eslint-disable-next-line import/named
 import { CodeInput, PasswordInput } from '../../../components/InputText/InputText';
-import { isPasswordSimilar, resetPassword, showToast } from '../../../utils';
+import {
+  isPasswordSimilar, resetPassword, showToast, toastMessage,
+} from '../../../utils';
 
 import { COLORS } from '../../../constants';
 import activationStyles from '../activation/activation.styles';
@@ -23,7 +24,7 @@ function ResetPassword() {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={activationStyles.container}>
         <Text>
-          Enter the 8-digit reset code you received with your email along with your new password. \
+          Enter the 8-digit reset code you received with your email along with your new password.
           Note that the reset code is case sensitive.
         </Text>
         <View>
@@ -58,7 +59,7 @@ function ResetPassword() {
               } else if (Platform.OS === 'android') {
                 showToast('Passwords must be similar');
               } else {
-                Alert.alert('', 'Passwords must be similar');
+                toastMessage('Passwords must be similar', 'info');
               }
             }}
           />

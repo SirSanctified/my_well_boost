@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  SafeAreaView, View, Text, Image, ActivityIndicator, Alert, Platform,
+  SafeAreaView, View, Text, Image, ActivityIndicator, Platform,
 } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
 import { useState } from 'react';
@@ -8,7 +8,9 @@ import Button from '../../../components/Button/Button';
 import { EmailInput } from '../../../components/InputText/InputText';
 import forgotPasswordStyles from './forgotPassword.styles';
 import { images, COLORS } from '../../../constants';
-import { forgotPassword, isEmailValid, showToast } from '../../../utils';
+import {
+  forgotPassword, isEmailValid, showToast, toastMessage,
+} from '../../../utils';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -60,7 +62,7 @@ function ForgotPassword() {
               } else if (Platform.OS === 'android') {
                 showToast('Please enter a valid email address');
               } else {
-                Alert.alert('', 'Please enter a valid email address');
+                toastMessage('Please enter a valid email address', 'info');
               }
             }}
           />

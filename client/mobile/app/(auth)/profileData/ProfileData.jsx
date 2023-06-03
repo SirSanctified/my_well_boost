@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  View, Text, Image, Alert, ActivityIndicator, KeyboardAvoidingView, Platform,
+  View, Text, Image, ActivityIndicator, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -12,7 +12,9 @@ import Button from '../../../components/Button/Button';
 import { COLORS, images } from '../../../constants';
 
 import profileDataStyles from './profileData.styles';
-import { showToast, signUp, validateDob } from '../../../utils';
+import {
+  showToast, signUp, toastMessage, validateDob,
+} from '../../../utils';
 
 function ProfileData() {
   const router = useRouter();
@@ -74,7 +76,7 @@ function ProfileData() {
               } else if (Platform.OS === 'android') {
                 showToast('Please verify your details are valid and try again');
               } else {
-                Alert.alert('', 'Please verify your details are valid and try again');
+                toastMessage('Please verify your details are valid and try again', 'info');
               }
             }}
             isDisabled={false}

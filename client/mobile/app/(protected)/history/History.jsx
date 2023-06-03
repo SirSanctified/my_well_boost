@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  SafeAreaView, View, Text, Image, ActivityIndicator, Alert, Platform,
+  SafeAreaView, View, Text, Image, ActivityIndicator, Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState, useEffect } from 'react';
@@ -10,7 +10,7 @@ import { images, COLORS } from '../../../constants';
 import { GoalsInput, HistoryInput } from '../../../components/InputText/InputText';
 import Button from '../../../components/Button/Button';
 import styles from '../../../styles/index.styles';
-import { createRecommendation, showToast } from '../../../utils';
+import { createRecommendation, showToast, toastMessage } from '../../../utils';
 import { useAuth } from '../../../context/auth';
 
 function History() {
@@ -80,7 +80,7 @@ function History() {
                 } else if (Platform.OS === 'android') {
                   showToast('Please fill in all fields so we can help you better');
                 } else {
-                  Alert.alert('', 'Please fill in all fields so we can help you better');
+                  toastMessage('Please fill in all fields so we can help you better', 'info');
                 }
               }}
               isDisabled={false}

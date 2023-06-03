@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/react-in-jsx-scope */
 import {
-  SafeAreaView, View, Text, ActivityIndicator, Alert, Platform,
+  SafeAreaView, View, Text, ActivityIndicator, Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import Button from '../../../components/Button/Button';
 import { CodeInput } from '../../../components/InputText/InputText';
-import { activate, showToast } from '../../../utils';
+import { activate, showToast, toastMessage } from '../../../utils';
 
 import { COLORS } from '../../../constants';
 import activationStyles from './activation.styles';
@@ -40,7 +40,7 @@ function Activation() {
               } else if (Platform.OS === 'android') {
                 showToast('The token must be 8 characters long');
               } else {
-                Alert.alert('', 'The token must be 8 characters long');
+                toastMessage('The token must be 8 characters long', 'info');
               }
             }}
           />

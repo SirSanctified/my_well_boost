@@ -2,6 +2,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { TextInput, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS } from '../../constants';
 import inputTextStyles from './inputText.styles';
@@ -28,7 +29,7 @@ export function EmailInput({
 }) {
   return (
     <View style={inputTextStyles.inputContainer}>
-      <FontAwesome name="envelope-o" size={20} color={COLORS.btnColor} />
+      <Fontisto name="email" size={20} color={COLORS.btnColor} />
       <InputText
         placeholder="Email Address"
         autoFocus={autoFocus}
