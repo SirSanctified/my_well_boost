@@ -1,8 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
 import axios from 'axios';
-import { Alert, Platform, ToastAndroid } from 'react-native';
+import { Platform, ToastAndroid } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 const baseURL = 'http://192.168.191.40:5000/';
+const toastStyle = {
+  alignItems: 'center', width: '50%', marginBottom: 20, alignSelf: 'center', borderRadius: 50,
+};
 
 export const isPasswordSimilar = (password1, password2) => {
   if (password1.length < 8 || password2.length < 8) {
@@ -21,6 +26,20 @@ export const showToast = (message) => {
   ToastAndroid.show(message, ToastAndroid.SHORT);
 };
 
+// show toast ios
+export const toastMessage = (msg, messageType) => {
+  showMessage({
+    message: msg,
+    autoHide: true,
+    duration: 5000,
+    type: messageType,
+    style: toastStyle,
+    animated: true,
+    animationDuration: 500,
+    icon: 'auto',
+  });
+};
+
 export const isEmailValid = (email) => {
   const emailRegex = /\S+@\S+\.\S+/;
   return emailRegex.test(email);
@@ -32,14 +51,14 @@ export const areCredentialsValid = (email, password1, password2) => {
     if (Platform.OS === 'android') {
       showToast('Invalid email address');
     } else {
-      Alert.alert('', 'Invalid email address');
+      toastMessage('Invalid email address', 'danger');
     }
     result = false;
   } else if (!isPasswordSimilar(password1, password2)) {
     if (Platform.OS === 'android') {
       showToast('Passwords do not match');
     } else {
-      Alert.alert('', 'Passwords do not match');
+      toastMessage('Passwords do not match', 'danger');
     }
     result = false;
   }
@@ -72,6 +91,11 @@ export const signUp = async (
     if (response.status === 201) {
       setIsLoading(false);
       router.push('/activation/Activation');
+      if (Platform.OS === 'android') {
+        showToast('Account created');
+      } else {
+        toastMessage('Account created', 'success');
+      }
     } else {
       throw new Error('Something went wrong. Please try again.');
     }
@@ -81,7 +105,7 @@ export const signUp = async (
     if (Platform.OS === 'android') {
       showToast(err.response.data);
     } else {
-      Alert.alert('', err.response.data);
+      toastMessage(err.response.data.error, 'danger');
     }
   }
 };
@@ -101,8 +125,12 @@ export const signIn = async (email, password, login, setIsLoading, router) => {
         setIsLoading(false);
         const { token, user } = response.data;
         login(token, user);
-        if (Platform.OS === 'android') showToast('Login successful');
         router.push('/history/History');
+        if (Platform.OS === 'android') {
+          showToast('Login successful');
+        } else {
+          toastMessage('Login successiful', 'success');
+        }
       } else {
         throw new Error('Something went wrong. Please try again.');
       }
@@ -112,7 +140,7 @@ export const signIn = async (email, password, login, setIsLoading, router) => {
       if (Platform.OS === 'android') {
         showToast(err.response.data.error);
       } else {
-        Alert.alert('', err.response.data.error);
+        toastMessage(err.response.data.error, 'info');
       }
     }
   } else {
@@ -120,7 +148,7 @@ export const signIn = async (email, password, login, setIsLoading, router) => {
     if (Platform.OS === 'android') {
       showToast('Invalid email or password');
     } else {
-      Alert.alert('', 'Invalid email or password');
+      toastMessage('Invalid email or password', 'danger');
     }
   }
 };
@@ -141,8 +169,12 @@ export const createRecommendation = async (
     }, { headers: { Authorization: `Bearer ${token}` } });
     if (response.status === 201) {
       setIsLoading(false);
-      if (Platform.OS === 'android') showToast('Recommendations created');
       router.push({ pathname: '/dashboard/Dashboard', params: { userId, token } });
+      if (Platform.OS === 'android') {
+        showToast('Recommendations created');
+      } else {
+        toastMessage('Recommendations created', 'info');
+      }
     } else {
       throw new Error('Something went wrong. Please try again.');
     }
@@ -151,9 +183,9 @@ export const createRecommendation = async (
     if (Platform.OS === 'android') {
       showToast(err.response.data.error);
     } else {
-      Alert.alert('', err.response.data.error);
+      toastMessage(err.response.data.error, 'danger');
     }
-    // console.log(err)
+    console.log(err);
   }
 };
 
@@ -165,8 +197,12 @@ export const activate = async (token, setIsLoading, router) => {
     });
     if (response.status === 200) {
       setIsLoading(false);
-      if (Platform.OS === 'android') showToast('Account activated');
       router.push('/login/Login');
+      if (Platform.OS === 'android') {
+        showToast('Account activation successiful');
+      } else {
+        toastMessage('Account activation successiful', 'success');
+      }
     } else {
       throw new Error('Something went wrong. Please try again.');
     }
@@ -175,7 +211,7 @@ export const activate = async (token, setIsLoading, router) => {
     if (Platform.OS === 'android') {
       showToast(err.response.data.error);
     } else {
-      Alert.alert('Error', err.response.data.error);
+      toastMessage(err.response.data.error, 'danger');
     }
     console.log(err.response.data.error);
   }
@@ -196,7 +232,7 @@ export const getRecommendations = async (userId, token, setIsLoading, setRecomme
     if (Platform.OS === 'android') {
       showToast(error.response.data.error);
     } else {
-      Alert.alert('Error', error.response.data.error);
+      toastMessage(error.response.data.error, 'danger');
     }
   }
 };
@@ -209,15 +245,19 @@ export const resetPassword = async (userId, resetCode, password, setIsLoading, r
     });
     if (response.status === 200) {
       setIsLoading(false);
-      if (Platform.OS === 'android') showToast('Password reset successful');
       router.push('/login/Login');
+      if (Platform.OS === 'android') {
+        showToast('Password reset successful');
+      } else {
+        toastMessage('Password reset successiful', 'success');
+      }
     }
   } catch (err) {
     setIsLoading(false);
     if (Platform.OS === 'android') {
       showToast(err.response.data.error);
     } else {
-      Alert.alert('', err.response.data.error);
+      toastMessage(err.response.data.error, 'danger');
     }
   }
 };
@@ -228,11 +268,15 @@ export const forgotPassword = async (email, setIsLoading, router) => {
     const response = await axios.post(`${baseURL}auth/forgot-password`, { email });
     if (response.status === 200) {
       setIsLoading(false);
-      if (Platform.OS === 'android') showToast('Reset code sent');
       router.push({
         pathname: '/resetPassword',
         params: { userId: response.data.userId },
       });
+      if (Platform.OS === 'android') {
+        showToast('Reset code sent');
+      } else {
+        toastMessage('Reset code sent', 'info');
+      }
     }
   } catch (err) {
     setIsLoading(false);
@@ -240,7 +284,7 @@ export const forgotPassword = async (email, setIsLoading, router) => {
     if (Platform.OS === 'android') {
       showToast(err.response.data.error);
     } else {
-      Alert.alert('', err.response.data.error);
+      toastMessage(err.response.data.error, 'danger');
     }
   }
 };
@@ -257,9 +301,13 @@ export const logoutUser = async (id, token, logout, setIsLoading, router) => {
   } catch (err) {
     setIsLoading(false);
   } finally {
-    if (Platform.OS === 'android') showToast('Logout successful');
     await logout();
     router.replace('/');
+    if (Platform.OS === 'android') {
+      showToast('Logout successful');
+    } else {
+      toastMessage('Logout successiful', 'success');
+    }
   }
 };
 
@@ -278,6 +326,8 @@ export const getHistory = async (userId, token, setIsLoading, setHistory, setGoa
     setIsLoading(false);
     if (Platform.OS === 'android') {
       showToast(err.response.data.error);
+    } else {
+      toastMessage(err.response.data.error, 'danger');
     }
   }
 };
@@ -287,15 +337,23 @@ export const updateProfile = async (userId, token, update, user, setIsloading) =
     setIsloading(true);
     const response = await axios.put(`${baseURL}users/${userId}`, { userId, ...user }, { headers: { Authorization: `Bearer ${token}` } });
     if (response.status === 200) {
-      setIsloading(false);
       await update(user);
-      if (Platform.OS === 'android') showToast('Profile updated');
+      setIsloading(false);
+      if (Platform.OS === 'android') {
+        showToast('Profile updated');
+      } else {
+        toastMessage('Profile updated', 'success');
+      }
     } else {
       throw new Error('Something went wrong. Please try again');
     }
   } catch (err) {
     setIsloading(false);
-    if (Platform.OS === 'android') showToast(err.response.data.error);
+    if (Platform.OS === 'android') {
+      showToast(err.response.data.error);
+    } else {
+      toastMessage(err.response.data.error, 'danger');
+    }
     console.log(err);
   }
 };
@@ -305,17 +363,21 @@ export const deleteProfile = async (userId, token, logout, setIsloading, router)
     setIsloading(true);
     const response = await axios.delete(`${baseURL}users/${userId}`, { headers: { Authorization: `Bearer ${token}` } });
     if (response.status === 200) {
-      setIsloading(false);
       await logout();
-      if (Platform.OS === 'android') showToast('Profile deleted');
+      setIsloading(false);
       router.replace('/');
+      if (Platform.OS === 'android') {
+        showToast('Profile deleted');
+      } else {
+        toastMessage('Profile deleted', 'success');
+      }
     }
   } catch (err) {
     setIsloading(false);
     if (Platform.OS === 'android') {
       showToast(err.response.data.error);
     } else {
-      Alert.alert('', err.response.data.error);
+      toastMessage(err.response.data.error, 'info');
     }
     console.log(err);
   }
@@ -336,5 +398,28 @@ export const getActivities = async (userId, token, setActivities, setIsLoading) 
     setIsLoading(false);
     console.log(error);
     throw new Error('Something went wrong, please try again');
+  }
+};
+
+export const chat = async (token, message, setReply, setIsLoading) => {
+  try {
+    setIsLoading(true);
+    const response = await axios.post(`${baseURL}chat/`, {
+      message,
+    }, { headers: { Authorization: `Bearer ${token}` } });
+    if (response.status === 200) {
+      setReply(response.data.reply);
+      setIsLoading(false);
+    } else {
+      throw new Error('Something went wrong');
+    }
+  } catch (error) {
+    setIsLoading(false);
+    console.log(error.response.data.error);
+    if (Platform.OS === 'android') {
+      showToast(error.response.data.error);
+    } else {
+      toastMessage(error.response.data.error, 'info');
+    }
   }
 };
