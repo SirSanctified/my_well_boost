@@ -6,6 +6,7 @@ import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import { COLORS } from '../../constants';
 import { logoutUser } from '../../utils';
 import { useAuth } from '../../context/auth';
@@ -80,6 +81,13 @@ export default function AppLayout() {
           options={{
             title: 'Account',
             tabBarIcon: () => <FontAwesome name="user" size={32} color={COLORS.btnColor} />,
+          }}
+        />
+        <Tabs.Screen
+          name="chat/index"
+          options={{
+            title: 'Chat',
+            tabBarIcon: () => <Entypo name="chat" size={32} color={COLORS.btnColor} />,
           }}
         />
       </Tabs>

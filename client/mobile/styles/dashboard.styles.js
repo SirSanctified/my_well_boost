@@ -26,6 +26,8 @@ const dashboardStyles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 5,
     lineHeight: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   activity: {
     backgroundColor: '#d9d9d9',

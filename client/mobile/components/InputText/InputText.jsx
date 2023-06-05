@@ -6,6 +6,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS } from '../../constants';
 import inputTextStyles from './inputText.styles';
+import { chat } from '../../utils';
 
 export default function InputText({
   placeholder, handleOnChange, textValue, autoFocus, lines, password,
@@ -181,6 +182,35 @@ export function GoalsInput({
         textValue={textValue}
         password={false}
         lines={lines}
+      />
+    </View>
+  );
+}
+
+export function ChatInput({
+  handleOnChange, textValue, autoFocus, token, setIsLoading, addChild, setMessage,
+}) {
+  return (
+    <View style={inputTextStyles.chatInputContainer}>
+      <InputText
+        placeholder="Talk to MyWellBoost AI..."
+        autoFocus={autoFocus || false}
+        handleOnChange={handleOnChange}
+        textValue={textValue}
+        password={false}
+        lines={5}
+      />
+      <MaterialCommunityIcons
+        name="send-outline"
+        size={32}
+        color={COLORS.btnColor}
+        onPress={async () => {
+          if (textValue.length > 0) {
+            addChild(textValue, 'user');
+            await chat(token, textValue, addChild, setIsLoading);
+          }
+          setMessage('');
+        }}
       />
     </View>
   );

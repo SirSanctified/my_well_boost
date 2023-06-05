@@ -7,7 +7,7 @@ import { COLORS } from '../constants';
 export default function App() {
   return (
     <SafeAreaView style={style.container}>
-      <ActivityIndicator size="large" color={COLORS.btnColor} />
+      <ActivityIndicator size={100} color={COLORS.btnColor} />
       <FlashMessage position="bottom" />
     </SafeAreaView>
   );

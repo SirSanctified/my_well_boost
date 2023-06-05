@@ -6,7 +6,6 @@ import {
   ScrollView, View, FlatList, Text, ActivityIndicator, KeyboardAvoidingView,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import dashboardStyles from '../../../styles/dashboard.styles';
 import { COLORS } from '../../../constants';
@@ -27,7 +26,6 @@ function ActivityItem({ item }, setIsSelected, isSelected) {
   );
 }
 function Dashboard() {
-  const router = useRouter();
   const [recommendations, setRecommendations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isActivitiesLoading, setIsActivitiesLoading] = useState(false);
@@ -60,7 +58,7 @@ function Dashboard() {
   return (
     (isUserAvailable
       ? (
-        <ScrollView style={{ flex: 1, backgroundColor: COLORS.bgPrimary }} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: COLORS.bgPrimary }} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <View style={dashboardStyles.container}>
               <Text style={dashboardStyles.header}>Your recommended Lifestyle modifications</Text>
@@ -71,16 +69,21 @@ function Dashboard() {
                     <Text style={dashboardStyles.recommendation}>{ item.trim() }</Text>
                   )}
                   keyExtractor={(item) => item}
+                  scrollEnabled={false}
                 />
               </View>
               <Text style={dashboardStyles.header}>Today&#39;s Activities</Text>
               <View style={{ marginTop: 20, marginBottom: 80 }}>
-                { activities.length !== 1
+                {isActivitiesLoading
+                  ? <ActivityIndicator size={100} color={COLORS.btnColor} />
+                  : null }
+                { !error && activities.length > 1
                   ? (
                     <FlatList
                       data={activities}
                       renderItem={({ item }) => (ActivityItem({ item }, setIsSelected, isSelected))}
                       keyExtractor={(item) => item}
+                      scrollEnabled={false}
                     />
                   )
                   : (

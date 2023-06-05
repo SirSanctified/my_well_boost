@@ -401,25 +401,21 @@ export const getActivities = async (userId, token, setActivities, setIsLoading) 
   }
 };
 
-export const chat = async (token, message, setReply, setIsLoading) => {
+export const chat = async (token, message, addChild, setIsLoading) => {
   try {
     setIsLoading(true);
     const response = await axios.post(`${baseURL}chat/`, {
       message,
     }, { headers: { Authorization: `Bearer ${token}` } });
     if (response.status === 200) {
-      setReply(response.data.reply);
       setIsLoading(false);
+      addChild(response.data.reply, 'ai');
     } else {
       throw new Error('Something went wrong');
     }
   } catch (error) {
     setIsLoading(false);
     console.log(error.response.data.error);
-    if (Platform.OS === 'android') {
-      showToast(error.response.data.error);
-    } else {
-      toastMessage(error.response.data.error, 'info');
-    }
+    addChild(error.response.data.error, 'ai');
   }
 };
